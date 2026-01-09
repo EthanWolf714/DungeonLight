@@ -1,4 +1,5 @@
 #include "raylib.h"
+#include "game.h"
 
 //------------------------------------------------------------------------------------
 // Program main entry point
@@ -12,6 +13,7 @@ int main()
 
     InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
 
+    Game game;
     
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -27,8 +29,8 @@ int main()
         // Draw
         //----------------------------------------------------------------------------------
         BeginDrawing();
-            ClearBackground(BLACK);
-            
+            ClearBackground(BLUE);
+            game.Draw();
 
             //DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
 
