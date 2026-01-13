@@ -8,6 +8,7 @@ Player::Player(){
     frameCounter = 0;
     framesSpeed = 4;
     currentFrame = 0;
+    isMoving  = false;
 }
 
 Player::~Player(){
@@ -20,34 +21,96 @@ void Player::Draw(){
 }
 
 void Player::Update(){
-    frameCounter ++;
-    if (frameCounter >= (60/framesSpeed))
-    {
-        frameCounter = 0;
-        currentFrame++;
 
-        if (currentFrame > 1) currentFrame = 0;
+    //if moving up or down call UpDown animation
+   if(isMovingUp || isMovingDown){
+        AnimateUpDown();
+   }else{
+        AnimateLeftRight();
+   }
 
-        frameRec.x = (float)currentFrame*(float)image.width/6;
-    }
-    
-    
-
+    isMovingUp = false;
+    isMovingDown = false;
     
 }
 
 void Player::Move(){
+    
     if(IsKeyDown(KEY_W)){
+        isMoving = true;
+        isMovingUp = true;
         position.y -= 5;
-    }
-    if(IsKeyDown(KEY_S)){
+        
+    }else if(IsKeyDown(KEY_S)){
+        isMoving = true;
+         isMovingDown = true;
         position.y += 5;
-    }
-    if(IsKeyDown(KEY_D)){
+       
+    }else if(IsKeyDown(KEY_D)){
+        isMoving = true;
         position.x += 5;
+        //flip sprite base on direction moved
+        if(frameRec.width < 0){
+             frameRec.width = -frameRec.width;
+        }
+        
+    }else if(IsKeyDown(KEY_A)){
+        isMoving = true;
+        position.x -= 5;
+        if(frameRec.width > 0){
+             frameRec.width = -frameRec.width;
+        }
+       
+    }else{
+        isMoving = false;
+    }
+}
+
+void Player::AnimateLeftRight(){
+     frameCounter++;
+    if (frameCounter >= (60/framesSpeed))
+    {
+        frameCounter = 0;
+        if(isMoving){
+            currentFrame++;
+
+            if (currentFrame > 1) //cycle between 0 and 1
+            {
+                currentFrame = 0;
+            } 
+            frameRec.x = (float)currentFrame*(float)image.width/6;
+        }
+
         
     }
-    if(IsKeyDown(KEY_A)){
-        position.x -= 5;
+}
+
+void Player::AnimateUpDown(){
+    frameCounter++;
+    if (frameCounter >= (60/framesSpeed))
+    {
+        frameCounter = 0;
+        if(isMoving){
+            if(isMovingUp){
+                currentFrame++;
+                if (currentFrame < 2 || currentFrame > 3) //cycle between 2 and 3
+                {
+                    currentFrame = 2;
+                }
+
+                frameRec.x = (float)currentFrame*(float)image.width/6;
+            }
+            else if(isMovingDown){
+                currentFrame++;
+                if( currentFrame < 4 || currentFrame > 5)//cycle between 4 and 5
+                {
+                    currentFrame = 4;
+                }
+                frameRec.x = (float)currentFrame*(float)image.width/6;
+            }
+            
+        }
+
+        
     }
 }

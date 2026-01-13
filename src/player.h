@@ -11,7 +11,9 @@ class Player{
         void Draw();
         void GetPosition();
         void Move();
-        void Animate();
+        void AnimateLeftRight();
+        void AnimateUpDown();
+
 
         
     private:
@@ -22,6 +24,10 @@ class Player{
         int frameCounter;
         int framesSpeed;
         int currentFrame;
+        bool isMoving;
+        float direction;
+        bool isMovingUp;
+        bool isMovingDown;
 
 
 };
