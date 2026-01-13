@@ -28,6 +28,8 @@ class Player{
         float direction;
         bool isMovingUp;
         bool isMovingDown;
+        float scale;
+        int lastDirectionMoved;
 
 
 };

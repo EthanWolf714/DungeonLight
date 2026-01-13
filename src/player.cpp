@@ -4,11 +4,13 @@ Player::Player(){
     image = LoadTexture("build/assets/wizard.png");
     position.x = (GetScreenWidth() - image.width)/ 2;
     position.y = (GetScreenHeight() - image.height) / 2;
+    scale = 2.0f;
     frameRec = { 0.0f, 0.0f, (float)image.width/6, (float)image.height };
     frameCounter = 0;
     framesSpeed = 4;
     currentFrame = 0;
     isMoving  = false;
+    lastDirectionMoved = 1;
 }
 
 Player::~Player(){
@@ -17,7 +19,13 @@ Player::~Player(){
 
 void Player::Draw(){   
 
-        DrawTextureRec(image, frameRec, {position.x,position.y}, WHITE);
+        Rectangle source = frameRec;
+        //scale framerec
+        Rectangle dest = {position.x, position.y, frameRec.width * scale, frameRec.height * scale};
+
+        Vector2 origin = {0.0f, 0.0f};
+        //draw player
+        DrawTexturePro(image, source, dest, origin, 0.0f, WHITE);
 }
 
 void Player::Update(){
@@ -39,11 +47,13 @@ void Player::Move(){
     if(IsKeyDown(KEY_W)){
         isMoving = true;
         isMovingUp = true;
+        lastDirectionMoved = 0;
         position.y -= 5;
         
     }else if(IsKeyDown(KEY_S)){
         isMoving = true;
          isMovingDown = true;
+         lastDirectionMoved = 1;
         position.y += 5;
        
     }else if(IsKeyDown(KEY_D)){
@@ -77,9 +87,10 @@ void Player::AnimateLeftRight(){
             if (currentFrame > 1) //cycle between 0 and 1
             {
                 currentFrame = 0;
-            } 
-            frameRec.x = (float)currentFrame*(float)image.width/6;
+            }
+            
         }
+        frameRec.x = (float)currentFrame*(float)image.width/6;
 
         
     }
@@ -98,7 +109,7 @@ void Player::AnimateUpDown(){
                     currentFrame = 2;
                 }
 
-                frameRec.x = (float)currentFrame*(float)image.width/6;
+            
             }
             else if(isMovingDown){
                 currentFrame++;
@@ -106,10 +117,14 @@ void Player::AnimateUpDown(){
                 {
                     currentFrame = 4;
                 }
-                frameRec.x = (float)currentFrame*(float)image.width/6;
+                
             }
             
+            
+        }else{
+           currentFrame = (lastDirectionMoved == 0) ? 2 : 4;
         }
+        frameRec.x = (float)currentFrame*(float)image.width/6;
 
         
     }
