@@ -24,7 +24,7 @@ int main()
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
-    TmxMap* map = LoadTMX("/build/maps/test-map.tmx");
+    TmxMap* map = LoadTMX("build/maps/test-map.tmx");
     if(map == NULL){
         TraceLog(LOG_ERROR, "Failed to load TMX map");
         CloseWindow();
@@ -35,7 +35,9 @@ int main()
 
     Camera2D camera;
     camera.target = game.GetPlayerPosition();
-    camera.zoom = 0.0f;
+    camera.zoom = 2.0f;
+    camera.offset = (Vector2){screenWidth/2.0f, screenHeight/2.0f}; 
+    camera.rotation = 0.0f;
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
@@ -50,10 +52,11 @@ int main()
             ClearBackground(BLACK);
             BeginMode2D(camera);
             {
-                game.Draw();
+                
 
                 AnimateTMX(map);
                 DrawTMX(map, NULL, NULL, 0,0,WHITE);
+                game.Draw();
             }
             EndMode2D();
 
