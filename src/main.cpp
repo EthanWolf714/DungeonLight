@@ -1,5 +1,7 @@
 #include "raylib.h"
 #include "game.h"
+#define RAYTMX_IMPLEMENTATION
+#include "raytmx.h"
 
 //------------------------------------------------------------------------------------
 // Program main entry point
