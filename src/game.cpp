@@ -18,6 +18,7 @@ Game::~Game(){
 }
 
 bool Game::LoadMap(const char* filepath){
+    //initialize tile map
     map = LoadTMX(filepath);
     if (map == NULL)
     {
