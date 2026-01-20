@@ -3,9 +3,6 @@
 #include <stddef.h> /* NULL */
 #include <stdlib.h> /* EXIT_FAILURE, EXIT_SUCCESS */
 
-#define RAYTMX_IMPLEMENTATION
-#include "raytmx.h"
-
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
@@ -17,28 +14,19 @@ int main()
     const int screenHeight = 450;
     // const float panSpeed = 150.f; // pixels per second
 
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+    InitWindow(screenWidth, screenHeight, "Dungeon Light");
 
-    Game game;
+    Game game(screenWidth, screenHeight);
 
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
-    TmxMap *map = LoadTMX("build/maps/test-map.tmx");
-    if (map == NULL)
-    {
-        TraceLog(LOG_ERROR, "Failed to load TMX map");
+    //init map
+    if(!game.LoadMap("build/maps/test-map.tmx")){
         CloseWindow();
         return EXIT_FAILURE;
     }
-
-    // create camera, modified to look at the player
-
-    Camera2D camera;
-    camera.target = game.GetPlayerPosition();
-    camera.zoom = 2.0f;
-    camera.offset = (Vector2){screenWidth / 2.0f, screenHeight / 2.0f};
-    camera.rotation = 0.0f;
+    
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
@@ -47,29 +35,19 @@ int main()
         // TODO: Update your variables here
         //----------------------------------------------------------------------------------
         game.Update();
-        camera.target = game.GetPlayerPosition();
+       
         // Draw
         //----------------------------------------------------------------------------------
         BeginDrawing();
-        ClearBackground(BLACK);
-        BeginMode2D(camera);
-        {
-
-            AnimateTMX(map);
-            DrawTMX(map, NULL, NULL, 0, 0, WHITE);
+            ClearBackground(BLACK);
             game.Draw();
-        }
-        EndMode2D();
-
-        // DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
-
         EndDrawing();
         //----------------------------------------------------------------------------------
     }
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
-    UnloadTMX(map);
+    
     CloseWindow(); // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 

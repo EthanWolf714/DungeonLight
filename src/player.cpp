@@ -4,7 +4,7 @@ Player::Player(){
     image = LoadTexture("build/assets/wizard.png");
     position.x = (GetScreenWidth() - image.width)/ 2;
     position.y = (GetScreenHeight() - image.height) / 2;
-    scale = 2.0f;
+    scale = 1.0f;
     frameRec = { 0.0f, 0.0f, (float)image.width/6, (float)image.height };
     frameCounter = 0;
     framesSpeed = 4;
@@ -48,17 +48,17 @@ void Player::Move(){
         isMoving = true;
         isMovingUp = true;
         lastDirectionMoved = 0;
-        position.y -= 5;
+        position.y -= 1.5;
         
     }else if(IsKeyDown(KEY_S)){
         isMoving = true;
          isMovingDown = true;
          lastDirectionMoved = 1;
-        position.y += 5;
+        position.y += 1.5;
        
     }else if(IsKeyDown(KEY_D)){
         isMoving = true;
-        position.x += 5;
+        position.x += 1.5;
         //flip sprite base on direction moved
         if(frameRec.width < 0){
              frameRec.width = -frameRec.width;
@@ -66,7 +66,7 @@ void Player::Move(){
         
     }else if(IsKeyDown(KEY_A)){
         isMoving = true;
-        position.x -= 5;
+        position.x -= 1.5;
         if(frameRec.width > 0){
              frameRec.width = -frameRec.width;
         }
