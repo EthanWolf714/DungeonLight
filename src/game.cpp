@@ -4,7 +4,7 @@
 Game::Game(int screenWidth, int screenHeight){
     //initialize camera
     camera.target = GetPlayerPosition();
-    camera.zoom = 2.0f;
+    camera.zoom = 3.0f;
     camera.offset = (Vector2){screenWidth / 2.0f, screenHeight / 2.0f};
     camera.rotation = 0.0f;
 

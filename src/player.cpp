@@ -14,7 +14,7 @@ Player::Player(){
 }
 
 Player::~Player(){
-
+    UnloadTexture(image);
 }
 
 void Player::Draw(){   
