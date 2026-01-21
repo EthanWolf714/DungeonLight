@@ -7,7 +7,7 @@ Player::Player(){
     scale = 1.0f;
     frameRec = { 0.0f, 0.0f, (float)image.width/6, (float)image.height };
     frameCounter = 0;
-    framesSpeed = 4;
+    framesSpeed = 5;
     currentFrame = 0;
     isMoving  = false;
     lastDirectionMoved = 1;
