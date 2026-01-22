@@ -2,8 +2,6 @@
 
 Player::Player(){
     image = LoadTexture("build/assets/wizard.png");
-    position.x = (GetScreenWidth() - image.width)/ 2;
-    position.y = (GetScreenHeight() - image.height) / 2;
     scale = 1.0f;
     frameRec = { 0.0f, 0.0f, (float)image.width/6, (float)image.height };
     frameCounter = 0;
@@ -21,8 +19,11 @@ void Player::Draw(){
 
         Rectangle source = frameRec;
         //scale framerec
-        Rectangle dest = {position.x, position.y, frameRec.width * scale, frameRec.height * scale};
-
+        Rectangle dest = {position.x, 
+            position.y, 
+            frameRec.width * scale, 
+            frameRec.height * scale};
+            
         Vector2 origin = {0.0f, 0.0f};
         //draw player
         DrawTexturePro(image, source, dest, origin, 0.0f, WHITE);
@@ -128,6 +129,10 @@ void Player::AnimateUpDown(){
 
         
     }
+}
+
+void Player::SetPosition(Vector2 pos){
+    position = pos;
 }
 
 Vector2 Player::GetPosition(){

@@ -8,6 +8,8 @@ Game::Game(int screenWidth, int screenHeight){
     camera.offset = (Vector2){screenWidth / 2.0f, screenHeight / 2.0f};
     camera.rotation = 0.0f;
 
+    
+
     map = nullptr;
 }
 
@@ -27,7 +29,38 @@ bool Game::LoadMap(const char* filepath){
 
     }
     TraceLog(LOG_INFO, "Map Loaded Successfully!");
+    
+    Vector2 spawnPos {100,100};
+
+    for(unsigned int i = 0; i < map->layersLength; i++){
+        const TmxLayer layer = map->layers[i];
+
+        if(layer.type == LAYER_TYPE_OBJECT_GROUP){
+            TmxObjectGroup objGroup = layer.exact.objectGroup;
+
+            for(unsigned int j = 0; j < objGroup.objectsLength; j++){
+                const TmxObject object = objGroup.objects[j];
+
+                if(object.name != NULL && strcmp(object.name, "spawn") == 0){
+                    spawnPos.x = object.x - 8;
+                    spawnPos.y = object.y - 10;
+                    //TraceLog(LOG_INFO, "Spawn object position: x=%.2f, y=%.2f", object.x, object.y);
+                    //TraceLog(LOG_INFO, "Spawn object size: w=%.2f, h=%.2f", object.width, object.height);
+                    
+                    break;
+                    
+
+                }
+            }
+        }
+    }
+
+    player.SetPosition(spawnPos);
+    camera.target = spawnPos;
+
     return true;
+
+    
 }
 
 void Game::Update(){
@@ -48,6 +81,9 @@ void Game::Draw(){
             AnimateTMX(map);
             DrawTMX(map, NULL, NULL, 0, 0, WHITE);
         }
+
+        // DEBUG: Draw red circle at spawn point
+        DrawCircle(40, 40, 5, RED);
         
         player.Draw();
             
