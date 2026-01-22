@@ -24,7 +24,7 @@ void Player::Draw(){
             frameRec.width * scale, 
             frameRec.height * scale};
             
-        Vector2 origin = {0.0f, 0.0f};
+        Vector2 origin = {8.0f, 8.0f};
         //draw player
         DrawTexturePro(image, source, dest, origin, 0.0f, WHITE);
 }
@@ -44,7 +44,6 @@ void Player::Update(){
 }
 
 void Player::Move(){
-    
     if(IsKeyDown(KEY_W)){
         isMoving = true;
         isMovingUp = true;
@@ -138,3 +137,16 @@ void Player::SetPosition(Vector2 pos){
 Vector2 Player::GetPosition(){
     return position;
 }
+
+Rectangle Player::GetFrameRec(){
+    float width = frameRec.width * scale;
+    if(width < 0) width = -width;  // Make positive
+    
+    return {
+        position.x, 
+        position.y, 
+        width,
+        frameRec.height * scale
+    };
+}
+

@@ -12,6 +12,7 @@ public:
     void HandleInput();
     Vector2 GetPlayerPosition();
     bool LoadMap(const char* filepath);
+    void HandleCollisions();
     
     
 
@@ -19,6 +20,7 @@ private:
     Player player;
     Camera2D camera;
     TmxMap* map;
+    Vector2 spawnPos;
     
 };
 

@@ -14,6 +14,9 @@ class Player{
         void Move();
         void AnimateLeftRight();
         void AnimateUpDown();
+        Rectangle GetFrameRec();
+        
+
         
 
 
@@ -32,6 +35,7 @@ class Player{
         bool isMovingDown;
         float scale;
         int lastDirectionMoved;
+        
 
 
 };

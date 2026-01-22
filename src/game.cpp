@@ -8,6 +8,7 @@ Game::Game(int screenWidth, int screenHeight){
     camera.offset = (Vector2){screenWidth / 2.0f, screenHeight / 2.0f};
     camera.rotation = 0.0f;
 
+    spawnPos = {40.0f, 40.0f};
     
 
     map = nullptr;
@@ -30,20 +31,22 @@ bool Game::LoadMap(const char* filepath){
     }
     TraceLog(LOG_INFO, "Map Loaded Successfully!");
     
-    Vector2 spawnPos {100,100};
+    
 
+    //loop through tilemap layers
     for(unsigned int i = 0; i < map->layersLength; i++){
         const TmxLayer layer = map->layers[i];
-
+        //loop through objects group
         if(layer.type == LAYER_TYPE_OBJECT_GROUP){
             TmxObjectGroup objGroup = layer.exact.objectGroup;
-
+            //loop through object layer
             for(unsigned int j = 0; j < objGroup.objectsLength; j++){
                 const TmxObject object = objGroup.objects[j];
-
+                //location spawn point object
                 if(object.name != NULL && strcmp(object.name, "spawn") == 0){
-                    spawnPos.x = object.x - 8;
-                    spawnPos.y = object.y - 10;
+                    //offset spawn positition for player sprite
+                    spawnPos.x = (float)(object.x + (object.width / 2.0));
+                    spawnPos.y = (float)(object.y + (object.height / 2.0));
                     //TraceLog(LOG_INFO, "Spawn object position: x=%.2f, y=%.2f", object.x, object.y);
                     //TraceLog(LOG_INFO, "Spawn object size: w=%.2f, h=%.2f", object.width, object.height);
                     
@@ -54,7 +57,7 @@ bool Game::LoadMap(const char* filepath){
             }
         }
     }
-
+    //set player position to spawn point
     player.SetPosition(spawnPos);
     camera.target = spawnPos;
 
@@ -66,6 +69,7 @@ bool Game::LoadMap(const char* filepath){
 void Game::Update(){
     
     HandleInput();
+    HandleCollisions();
     player.Update();
     
     //update camera position to target player
@@ -93,6 +97,31 @@ void Game::Draw(){
 
 void Game::HandleInput(){
     player.Move();
+}
+
+void Game::HandleCollisions(){
+    TmxObjectGroup wallsObjectGroup = {};
+
+    for(unsigned int i = 0; i < map->layersLength; i++){
+        const TmxLayer layer = map->layers[i];
+        if(strcmp(layer.name, "Walls") == 0 && layer.type == LAYER_TYPE_OBJECT_GROUP){
+            wallsObjectGroup = layer.exact.objectGroup;
+
+            Rectangle playerRec = player.GetFrameRec();
+            
+            bool collided = CheckCollisionTMXObjectGroupRec(wallsObjectGroup, playerRec, NULL);
+            
+         
+
+            if(collided){
+                TraceLog(LOG_INFO, "COLLISION DETECTED! Sending player to spawn");
+                player.SetPosition(spawnPos);
+            }
+    
+            break;  // Found it, stop searching layers
+        }
+    }
+    
 }
 
 Vector2 Game::GetPlayerPosition(){
