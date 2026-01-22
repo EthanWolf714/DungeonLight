@@ -6,6 +6,9 @@
             "type": "shell",
             "command": "g++",
             "args": [
+                "-g",
+                "-O0",
+                "-Wall",
                 "-o",
                 "${workspaceFolder}/build/game.exe",
                 "${workspaceFolder}/src/*.cpp",
@@ -16,8 +19,7 @@
                 "-lopengl32",
                 "-lgdi32",
                 "-lwinmm",
-                "-g",
-                "-Wall"
+                
             ],
             "group": {
                 "kind": "build",
