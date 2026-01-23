@@ -1,9 +1,11 @@
 #include "player.h"
 
+
+
 Player::Player(){
     image = LoadTexture("build/assets/wizard.png");
     scale = 1.0f;
-    frameRec = { 0.0f, 0.0f, (float)image.width/6, (float)image.height };
+    frameRec = { 0.0f, 0.0f, (float)image.width/6, (float)image.height};
     frameCounter = 0;
     framesSpeed = 5;
     currentFrame = 0;
@@ -16,17 +18,19 @@ Player::~Player(){
 }
 
 void Player::Draw(){   
-
+        
         Rectangle source = frameRec;
         //scale framerec
         Rectangle dest = {position.x, 
             position.y, 
             frameRec.width * scale, 
-            frameRec.height * scale};
+            frameRec.height * scale };
             
-        Vector2 origin = {8.0f, 8.0f};
+        Vector2 origin = {0.0f,0.0f};
+        DrawRectangleLines(position.x, position.y, frameRec.width *scale, frameRec.height *scale, BLUE);
         //draw player
         DrawTexturePro(image, source, dest, origin, 0.0f, WHITE);
+        
 }
 
 void Player::Update(){
@@ -43,7 +47,16 @@ void Player::Update(){
     
 }
 
+
+// Player::HandleInput()
+    //set player state idle
+    // for each key set direction to match 
+    //and change player state to moving
+    //put key checks here from move
 void Player::Move(){
+
+    
+    
     if(IsKeyDown(KEY_W)){
         isMoving = true;
         isMovingUp = true;
@@ -74,6 +87,10 @@ void Player::Move(){
     }else{
         isMoving = false;
     }
+
+    //if player isn't moving 
+    //set speed = 1.5;
+    //switch(direction)
 }
 
 void Player::AnimateLeftRight(){

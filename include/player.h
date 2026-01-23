@@ -2,6 +2,17 @@
 #define PLAYER_H
 
 #include "raylib.h"
+enum class Direction {
+    Left,
+    Right,
+    Up,
+    Down
+};
+
+enum class  PlayerState {
+    Idle,
+    Moving
+};
 
 class Player{
     public:
@@ -12,6 +23,8 @@ class Player{
         void SetPosition(Vector2 pos);
         Vector2 GetPosition();
         void Move();
+        // void HandleInput();
+        //void Animate(float dt);
         void AnimateLeftRight();
         void AnimateUpDown();
         Rectangle GetFrameRec();
@@ -22,6 +35,8 @@ class Player{
 
         
     private:
+        Direction direction;
+        PlayerState state;
         Vector2 position;
         Vector2 speed;
         Texture2D image;
