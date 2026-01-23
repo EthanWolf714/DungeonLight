@@ -47,12 +47,6 @@ void Player::Update(){
     
 }
 
-
-// Player::HandleInput()
-    //set player state idle
-    // for each key set direction to match 
-    //and change player state to moving
-    //put key checks here from move
 void Player::Move(){
 
     

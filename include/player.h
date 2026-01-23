@@ -45,7 +45,6 @@ class Player{
         int framesSpeed;
         int currentFrame;
         bool isMoving;
-        float direction;
         bool isMovingUp;
         bool isMovingDown;
         float scale;

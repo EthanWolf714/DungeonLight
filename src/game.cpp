@@ -9,7 +9,7 @@ Game::Game(int screenWidth, int screenHeight){
     camera.rotation = 0.0f;
 
     spawnPos = {40.0f, 40.0f};
-    
+    dt = GetFrameTime();
 
     map = nullptr;
 }

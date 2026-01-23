@@ -21,6 +21,7 @@ private:
     Camera2D camera;
     TmxMap* map;
     Vector2 spawnPos;
+    float dt;
     
 };
 
