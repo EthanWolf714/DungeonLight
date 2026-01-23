@@ -45,8 +45,8 @@ bool Game::LoadMap(const char* filepath){
                 //location spawn point object
                 if(object.name != NULL && strcmp(object.name, "spawn") == 0){
                     //offset spawn positition for player sprite
-                    spawnPos.x = (float)(object.x + (object.width / 2.0));
-                    spawnPos.y = (float)(object.y + (object.height / 2.0));
+                    spawnPos.x = object.x - 8;
+                    spawnPos.y = object.y - 8;
                     //TraceLog(LOG_INFO, "Spawn object position: x=%.2f, y=%.2f", object.x, object.y);
                     //TraceLog(LOG_INFO, "Spawn object size: w=%.2f, h=%.2f", object.width, object.height);
                     

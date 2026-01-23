@@ -9,11 +9,6 @@ enum class Direction {
     Down
 };
 
-enum class  PlayerState {
-    Idle,
-    Moving
-};
-
 class Player{
     public:
         Player();
@@ -23,10 +18,7 @@ class Player{
         void SetPosition(Vector2 pos);
         Vector2 GetPosition();
         void Move();
-        // void HandleInput();
-        //void Animate(float dt);
-        void AnimateLeftRight();
-        void AnimateUpDown();
+        void Animate();
         Rectangle GetFrameRec();
         
 
@@ -36,19 +28,16 @@ class Player{
         
     private:
         Direction direction;
-        PlayerState state;
         Vector2 position;
         Vector2 speed;
         Texture2D image;
         Rectangle frameRec;
+        int animFrame;
         int frameCounter;
         int framesSpeed;
-        int currentFrame;
         bool isMoving;
-        bool isMovingUp;
-        bool isMovingDown;
+        bool facingLeft;
         float scale;
-        int lastDirectionMoved;
         
 
 

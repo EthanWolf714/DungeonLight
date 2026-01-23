@@ -1,16 +1,20 @@
 #include "player.h"
+#include <math.h>
 
 
 
 Player::Player(){
     image = LoadTexture("build/assets/wizard.png");
+    position = {0,0};
     scale = 1.0f;
-    frameRec = { 0.0f, 0.0f, (float)image.width/6, (float)image.height};
+    frameRec = { 4.0f * (float)image.width/6, 0.0f, (float)image.width/6, (float)image.height}; //start in down frame
     frameCounter = 0;
     framesSpeed = 5;
-    currentFrame = 0;
     isMoving  = false;
-    lastDirectionMoved = 1;
+    direction = Direction::Down;
+    facingLeft = false;
+    animFrame = 0;
+   
 }
 
 Player::~Player(){
@@ -21,9 +25,12 @@ void Player::Draw(){
         
         Rectangle source = frameRec;
         //scale framerec
+        if(facingLeft){
+            source.width = -source.width;
+        }
         Rectangle dest = {position.x, 
             position.y, 
-            frameRec.width * scale, 
+            abs(source.width) * scale, 
             frameRec.height * scale };
             
         Vector2 origin = {0.0f,0.0f};
@@ -35,15 +42,7 @@ void Player::Draw(){
 
 void Player::Update(){
 
-    //if moving up or down call UpDown animation
-   if(isMovingUp || isMovingDown){
-        AnimateUpDown();
-   }else{
-        AnimateLeftRight();
-   }
-
-    isMovingUp = false;
-    isMovingDown = false;
+   Animate();
     
 }
 
@@ -51,93 +50,64 @@ void Player::Move(){
 
     
     
+   isMoving = false;
+    
+    // Vertical movement
     if(IsKeyDown(KEY_W)){
         isMoving = true;
-        isMovingUp = true;
-        lastDirectionMoved = 0;
+        direction = Direction::Up;
         position.y -= 1.5;
-        
-    }else if(IsKeyDown(KEY_S)){
+    }
+    else if(IsKeyDown(KEY_S)){
         isMoving = true;
-         isMovingDown = true;
-         lastDirectionMoved = 1;
+        direction = Direction::Down;
         position.y += 1.5;
-       
-    }else if(IsKeyDown(KEY_D)){
+    }
+    
+    // Horizontal movement (can override vertical for animation)
+    if(IsKeyDown(KEY_D)){
         isMoving = true;
+        direction = Direction::Right;
+        facingLeft = false;
         position.x += 1.5;
-        //flip sprite base on direction moved
-        if(frameRec.width < 0){
-             frameRec.width = -frameRec.width;
-        }
-        
-    }else if(IsKeyDown(KEY_A)){
+    }
+    else if(IsKeyDown(KEY_A)){
         isMoving = true;
+        direction = Direction::Left;
+        facingLeft = true;
         position.x -= 1.5;
-        if(frameRec.width > 0){
-             frameRec.width = -frameRec.width;
-        }
-       
-    }else{
-        isMoving = false;
     }
 
-    //if player isn't moving 
-    //set speed = 1.5;
-    //switch(direction)
 }
 
-void Player::AnimateLeftRight(){
-     frameCounter++;
-    if (frameCounter >= (60/framesSpeed))
-    {
-        frameCounter = 0;
-        if(isMoving){
-            currentFrame++;
-
-            if (currentFrame > 1) //cycle between 0 and 1
-            {
-                currentFrame = 0;
-            }
-            
-        }
-        frameRec.x = (float)currentFrame*(float)image.width/6;
-
-        
-    }
-}
-
-void Player::AnimateUpDown(){
+void Player::Animate(){
     frameCounter++;
-    if (frameCounter >= (60/framesSpeed))
-    {
+    if (frameCounter >= (60 / framesSpeed)){
         frameCounter = 0;
-        if(isMoving){
-            if(isMovingUp){
-                currentFrame++;
-                if (currentFrame < 2 || currentFrame > 3) //cycle between 2 and 3
-                {
-                    currentFrame = 2;
-                }
-
-            
-            }
-            else if(isMovingDown){
-                currentFrame++;
-                if( currentFrame < 4 || currentFrame > 5)//cycle between 4 and 5
-                {
-                    currentFrame = 4;
-                }
-                
-            }
-            
-            
-        }else{
-           currentFrame = (lastDirectionMoved == 0) ? 2 : 4;
-        }
-        frameRec.x = (float)currentFrame*(float)image.width/6;
-
         
+        if(isMoving){
+            animFrame = (animFrame == 0) ? 1 : 0;  // Toggle between 0 and 1
+        } else {
+            animFrame = 0;  // Idle on first frame
+        }
+        
+        // Calculate frame based on direction and animation frame
+        int frameIndex = 0;
+        
+        switch(direction){
+            case Direction::Right:
+            case Direction::Left:
+                frameIndex = animFrame;  // Frames 0-1 for horizontal
+                break;
+            case Direction::Up:
+                frameIndex = 2 + animFrame;  // Frames 2-3 for up
+                break;
+            case Direction::Down:
+                frameIndex = 4 + animFrame;  // Frames 4-5 for down
+                break;
+        }
+        
+        frameRec.x = (float)frameIndex * (float)image.width / 6;
     }
 }
 
@@ -150,13 +120,11 @@ Vector2 Player::GetPosition(){
 }
 
 Rectangle Player::GetFrameRec(){
-    float width = frameRec.width * scale;
-    if(width < 0) width = -width;  // Make positive
     
     return {
         position.x, 
         position.y, 
-        width,
+        abs(frameRec.width * scale),
         frameRec.height * scale
     };
 }
