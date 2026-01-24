@@ -7,13 +7,14 @@ Player::Player(){
     player_rightLeft = LoadTexture("build/assets/wizard_rightLeft.png");
     player_up = LoadTexture("build/assets/wizard_up.png");
     player_down = LoadTexture("build/assets/wizard_down.png");
-    playerSprite = &player_down;
+    playerSprite = &player_down; //start facing down
     position = {0,0};
     scale = 1.0f;
-    frameRec = { 0.0f, 0.0f,frame_width, frame_height}; //start in down frame
+    frameRec = { 0.0f, 0.0f,frame_width, frame_height}; 
     isMoving  = false;
     direction = Direction::Down;
     facingLeft = false;
+    speed = 1.5f;
    
 
     
@@ -29,9 +30,8 @@ Player::~Player(){
 void Player::Draw(){   
         
         Rectangle source = frameRec;
-        //scale framerec
+    
         if(facingLeft){
-            source.x += frame_width;
             source.width = -frame_width;
         }
         Rectangle dest = {
@@ -65,47 +65,53 @@ void Player::Move(){
         isMoving = true;
         direction = Direction::Up;
         playerSprite = &player_up;
-        position.y -= 1.5;
+        position.y -= speed;
     }
     else if(IsKeyDown(KEY_S)){
         isMoving = true;
         direction = Direction::Down;
         playerSprite = &player_down;
-        position.y += 1.5;
+        position.y += speed;
     }
-
+    //horizontal movement
     if(IsKeyDown(KEY_D)){
         isMoving = true;
         direction = Direction::Right;
         playerSprite = &player_rightLeft;
         facingLeft = false;
-        position.x += 1.5;
+        position.x += speed;
     }
     else if(IsKeyDown(KEY_A)){
         isMoving = true;
         direction = Direction::Left;
         playerSprite = &player_rightLeft;
         facingLeft = true;
-        position.x -= 1.5;
+        position.x -= speed;
     }
 
 }
 
 void Player::Animate(){
 
+
+    //idle frame
     if (!isMoving)
     {
-        frame = 0;                 // idle frame
+        frame = 0;                
         frameRec.x = 0.0f;
         runningTime = 0.0f;
         return;
     }
 
+    //add animation time to delta
     runningTime += GetFrameTime();
+
     if (runningTime >= updateTime){
+        //move frame
         frame = (frame +1 ) %2;
+        //update frame rectangle
         frameRec.x = frame * frame_width;
-        
+        //reset animation time
         runningTime = 0.0f;
     }
 }

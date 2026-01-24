@@ -23,7 +23,7 @@ class Player{
     private:
         Direction direction;
         Vector2 position;
-        Vector2 speed;
+        float speed;
         Texture2D player_rightLeft;
         Texture2D player_up;
         Texture2D player_down;
