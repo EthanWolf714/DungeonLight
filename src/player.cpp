@@ -10,13 +10,12 @@ Player::Player(){
     playerSprite = &player_down;
     position = {0,0};
     scale = 1.0f;
-    frameRec = { 0.0f,0.0f,(float)playerSprite->width / 2, (float)playerSprite->height}; //start in down frame
-    frameCounter = 0;
-    framesSpeed = 5;
+    frameRec = { 0.0f, 0.0f,frame_width, frame_height}; //start in down frame
     isMoving  = false;
     direction = Direction::Down;
     facingLeft = false;
-    animFrame = 0;
+   
+
     
    
 }
@@ -32,17 +31,18 @@ void Player::Draw(){
         Rectangle source = frameRec;
         //scale framerec
         if(facingLeft){
-            source.width = -source.width;
+            source.x += frame_width;
+            source.width = -frame_width;
         }
         Rectangle dest = {
             position.x, 
             position.y, 
-            abs(source.width) * scale, 
-            source.height * scale };
+            frame_width * scale, 
+            frame_height * scale };
             
         Vector2 origin = {0.0f,0.0f};
         //player collision box
-        DrawRectangleLines(position.x, position.y, frameRec.width *scale, frameRec.height *scale, BLUE);
+        DrawRectangleLines(position.x, position.y, frame_width *scale, frame_height *scale, BLUE);
         //draw player
         DrawTexturePro(*playerSprite, source, dest, origin, 0.0f, WHITE);
         
@@ -92,18 +92,21 @@ void Player::Move(){
 }
 
 void Player::Animate(){
-    frameCounter++;
-    if (frameCounter >= (60 / framesSpeed)){
-        frameCounter = 0;
-        
-        if(isMoving){
-            animFrame = (animFrame == 0) ? 1 : 0;  // Toggle between 0 and 1
-        } else {
-            animFrame = 0;  // Idle on first frame
-        }
 
+    if (!isMoving)
+    {
+        frame = 0;                 // idle frame
+        frameRec.x = 0.0f;
+        runningTime = 0.0f;
+        return;
+    }
+
+    runningTime += GetFrameTime();
+    if (runningTime >= updateTime){
+        frame = (frame +1 ) %2;
+        frameRec.x = frame * frame_width;
         
-        frameRec.x = (float)animFrame * (float)playerSprite->width / 2;
+        runningTime = 0.0f;
     }
 }
 

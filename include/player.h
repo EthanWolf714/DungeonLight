@@ -29,9 +29,12 @@ class Player{
         Texture2D player_down;
         Texture2D* playerSprite;
         Rectangle frameRec;
-        int animFrame;
-        int frameCounter;
-        int framesSpeed;
+        int frame;
+        float runningTime;
+        const int maxFrame {1};
+        const float updateTime{.20f};
+        static constexpr float frame_width = 16.0f;
+        static constexpr float frame_height = 16.0f;
         bool isMoving;
         bool facingLeft;
         float scale;
