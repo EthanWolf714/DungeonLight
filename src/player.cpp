@@ -122,7 +122,7 @@ void Player::SetPosition(Vector2 pos){
 }
 
 Vector2 Player::GetPosition(){
-    return position;
+    return {position.x,position.y};
 }
 
 Rectangle Player::GetFrameRec(){

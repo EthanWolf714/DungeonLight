@@ -12,6 +12,10 @@ Game::Game(int screenWidth, int screenHeight){
     dt = GetFrameTime();
 
     map = nullptr;
+    
+
+
+
 }
 
 Game::~Game(){
@@ -74,6 +78,8 @@ void Game::Update(){
     
     //update camera position to target player
     camera.target = GetPlayerPosition();
+
+    
 }
 
 void Game::Draw(){
@@ -126,5 +132,9 @@ void Game::HandleCollisions(){
 
 Vector2 Game::GetPlayerPosition(){
     return player.GetPosition();
+}
+
+Camera2D Game::GetCamera(){
+    return camera;
 }
 
