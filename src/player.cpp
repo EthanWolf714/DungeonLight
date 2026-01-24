@@ -14,7 +14,7 @@ Player::Player(){
     isMoving  = false;
     direction = Direction::Down;
     facingLeft = false;
-    speed = 1.5f;
+    speed = 90.f;
    
 
     
@@ -56,6 +56,7 @@ void Player::Update(){
 
 void Player::Move(){
 
+    float dt = GetFrameTime();
     
     //is player moving
    isMoving = false;
@@ -65,13 +66,13 @@ void Player::Move(){
         isMoving = true;
         direction = Direction::Up;
         playerSprite = &player_up;
-        position.y -= speed;
+        position.y -= speed * dt;
     }
     else if(IsKeyDown(KEY_S)){
         isMoving = true;
         direction = Direction::Down;
         playerSprite = &player_down;
-        position.y += speed;
+        position.y += speed * dt;
     }
     //horizontal movement
     if(IsKeyDown(KEY_D)){
@@ -79,14 +80,14 @@ void Player::Move(){
         direction = Direction::Right;
         playerSprite = &player_rightLeft;
         facingLeft = false;
-        position.x += speed;
+        position.x += speed * dt;
     }
     else if(IsKeyDown(KEY_A)){
         isMoving = true;
         direction = Direction::Left;
         playerSprite = &player_rightLeft;
         facingLeft = true;
-        position.x -= speed;
+        position.x -= speed * dt;
     }
 
 }
