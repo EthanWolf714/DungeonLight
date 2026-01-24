@@ -20,17 +20,14 @@ class Player{
         void Move();
         void Animate();
         Rectangle GetFrameRec();
-        
-
-        
-
-
-        
     private:
         Direction direction;
         Vector2 position;
         Vector2 speed;
-        Texture2D image;
+        Texture2D player_rightLeft;
+        Texture2D player_up;
+        Texture2D player_down;
+        Texture2D* playerSprite;
         Rectangle frameRec;
         int animFrame;
         int frameCounter;

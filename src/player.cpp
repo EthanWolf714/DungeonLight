@@ -4,21 +4,27 @@
 
 
 Player::Player(){
-    image = LoadTexture("build/assets/wizard.png");
+    player_rightLeft = LoadTexture("build/assets/wizard_rightLeft.png");
+    player_up = LoadTexture("build/assets/wizard_up.png");
+    player_down = LoadTexture("build/assets/wizard_down.png");
+    playerSprite = &player_down;
     position = {0,0};
     scale = 1.0f;
-    frameRec = { 4.0f * (float)image.width/6, 0.0f, (float)image.width/6, (float)image.height}; //start in down frame
+    frameRec = { 0.0f,0.0f,(float)playerSprite->width / 2, (float)playerSprite->height}; //start in down frame
     frameCounter = 0;
     framesSpeed = 5;
     isMoving  = false;
     direction = Direction::Down;
     facingLeft = false;
     animFrame = 0;
+    
    
 }
 
 Player::~Player(){
-    UnloadTexture(image);
+    UnloadTexture(player_rightLeft);
+    UnloadTexture(player_up);
+    UnloadTexture(player_down);
 }
 
 void Player::Draw(){   
@@ -28,15 +34,17 @@ void Player::Draw(){
         if(facingLeft){
             source.width = -source.width;
         }
-        Rectangle dest = {position.x, 
+        Rectangle dest = {
+            position.x, 
             position.y, 
             abs(source.width) * scale, 
-            frameRec.height * scale };
+            source.height * scale };
             
         Vector2 origin = {0.0f,0.0f};
+        //player collision box
         DrawRectangleLines(position.x, position.y, frameRec.width *scale, frameRec.height *scale, BLUE);
         //draw player
-        DrawTexturePro(image, source, dest, origin, 0.0f, WHITE);
+        DrawTexturePro(*playerSprite, source, dest, origin, 0.0f, WHITE);
         
 }
 
@@ -49,31 +57,34 @@ void Player::Update(){
 void Player::Move(){
 
     
-    
+    //is player moving
    isMoving = false;
     
     // Vertical movement
     if(IsKeyDown(KEY_W)){
         isMoving = true;
         direction = Direction::Up;
+        playerSprite = &player_up;
         position.y -= 1.5;
     }
     else if(IsKeyDown(KEY_S)){
         isMoving = true;
         direction = Direction::Down;
+        playerSprite = &player_down;
         position.y += 1.5;
     }
-    
-    // Horizontal movement (can override vertical for animation)
+
     if(IsKeyDown(KEY_D)){
         isMoving = true;
         direction = Direction::Right;
+        playerSprite = &player_rightLeft;
         facingLeft = false;
         position.x += 1.5;
     }
     else if(IsKeyDown(KEY_A)){
         isMoving = true;
         direction = Direction::Left;
+        playerSprite = &player_rightLeft;
         facingLeft = true;
         position.x -= 1.5;
     }
@@ -90,24 +101,9 @@ void Player::Animate(){
         } else {
             animFrame = 0;  // Idle on first frame
         }
+
         
-        // Calculate frame based on direction and animation frame
-        int frameIndex = 0;
-        
-        switch(direction){
-            case Direction::Right:
-            case Direction::Left:
-                frameIndex = animFrame;  // Frames 0-1 for horizontal
-                break;
-            case Direction::Up:
-                frameIndex = 2 + animFrame;  // Frames 2-3 for up
-                break;
-            case Direction::Down:
-                frameIndex = 4 + animFrame;  // Frames 4-5 for down
-                break;
-        }
-        
-        frameRec.x = (float)frameIndex * (float)image.width / 6;
+        frameRec.x = (float)animFrame * (float)playerSprite->width / 2;
     }
 }
 
