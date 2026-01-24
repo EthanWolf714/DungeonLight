@@ -47,6 +47,8 @@ int main()
         rlSetBlendMode(BLEND_CUSTOM);
 
         //draw light mask with camera
+        //this allows the light mask to be drawn in world space
+        //and not screen space
         BeginMode2D(game.GetCamera());
 
             Vector2 playerPos = game.GetPlayerPosition();
