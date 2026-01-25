@@ -20,9 +20,11 @@ class Player{
         void Move();
         void Animate();
         Rectangle GetFrameRec();
+        void UndoMovement();
     private:
         Direction direction;
         Vector2 position;
+        Vector2 previousPosition;
         float speed;
         Texture2D player_rightLeft;
         Texture2D player_up;
@@ -38,6 +40,7 @@ class Player{
         bool isMoving;
         bool facingLeft;
         float scale;
+        
         
 
 

@@ -120,8 +120,8 @@ void Game::HandleCollisions(){
          
 
             if(collided){
-                TraceLog(LOG_INFO, "COLLISION DETECTED! Sending player to spawn");
-                player.SetPosition(spawnPos);
+                //TraceLog(LOG_INFO, "COLLISION DETECTED! Sending player to spawn");
+                player.UndoMovement();
             }
     
             break;  // Found it, stop searching layers

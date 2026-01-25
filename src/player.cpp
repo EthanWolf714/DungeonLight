@@ -57,6 +57,8 @@ void Player::Update(){
 void Player::Move(){
 
     float dt = GetFrameTime();
+
+    previousPosition = position;
     
     //is player moving
    isMoving = false;
@@ -133,5 +135,9 @@ Rectangle Player::GetFrameRec(){
         abs(frameRec.width * scale),
         frameRec.height * scale
     };
+}
+
+void Player::UndoMovement(){
+    position = previousPosition;
 }
 
