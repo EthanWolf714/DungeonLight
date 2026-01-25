@@ -56,7 +56,9 @@ int main()
             float centerX = playerPos.x + (16 * 1.0) / 2.0f;
             float centerY = playerPos.y + (16 * 1.0) / 2.0f;
             //draw blank whole in texture.
-            DrawCircle(centerX, centerY, 30, BLANK );
+            DrawCircleGradient(centerX, centerY, 30, (Color){0,0,0,0},(Color){0,0,0,200});
+            DrawCircle(centerX, centerY, 15, (Color){0,0,0,100});
+
 
         EndMode2D();
         //go back to normal
