@@ -8,3 +8,5 @@ cmake_install.cmake
 Makefile
 .cache/
 compile_commands.json
+raytmx_impl.cpp
+raytmx.h
