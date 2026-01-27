@@ -2,6 +2,7 @@
 #define GAME_H
 #include "player.h"
 #include "raytmx.h"
+#include "camera.h"
 
 
 class Game
@@ -13,17 +14,16 @@ public:
     void Update();
     void HandleInput();
     Vector2 GetPlayerPosition();
-    Camera2D GetCamera();
     bool LoadMap(const char* filepath);
     void HandleCollisions();
     void CreateLightMask();
-    
+    Camera2D GetCamera();
     
 
 private:
 
     Player player;
-    Camera2D camera;
+    GameCamera camera;
     TmxMap* map;
     Vector2 spawnPos;
     float dt;

@@ -1,12 +1,9 @@
 #include "game.h"
 #include "raytmx.h"
 
-Game::Game(int screenWidth, int screenHeight){
-    //initialize camera
-    camera.target = GetPlayerPosition();
-    camera.zoom = 3.0f;
-    camera.offset = (Vector2){screenWidth / 2.0f, screenHeight / 2.0f};
-    camera.rotation = 0.0f;
+Game::Game(int screenWidth, int screenHeight) : camera(screenWidth, screenHeight){
+
+    camera.setCameraTarget(GetPlayerPosition());
 
     spawnPos = {40.0f, 40.0f};
     dt = GetFrameTime();
@@ -63,7 +60,7 @@ bool Game::LoadMap(const char* filepath){
     }
     //set player position to spawn point
     player.SetPosition(spawnPos);
-    camera.target = spawnPos;
+    camera.setCameraTarget(spawnPos);
 
     return true;
 
@@ -77,14 +74,14 @@ void Game::Update(){
     player.Update();
     
     //update camera position to target player
-    camera.target = GetPlayerPosition();
+    camera.setCameraTarget(GetPlayerPosition());
 
     
 }
 
 void Game::Draw(){
     
-    BeginMode2D(camera);
+    BeginMode2D(camera.GetCamera());
     {
         //draw map first(background)
         if(map != nullptr){
@@ -135,6 +132,8 @@ Vector2 Game::GetPlayerPosition(){
 }
 
 Camera2D Game::GetCamera(){
-    return camera;
+    return camera.GetCamera();
 }
+
+
 
