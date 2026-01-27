@@ -10,3 +10,4 @@ Makefile
 compile_commands.json
 **/raytmx_impl.cpp
 **/raytmx.h
+**/hoxml.h
