@@ -1,6 +1,6 @@
 #include "torch.h"
 
-Torch::Torch(Vector2 pos, float amount = 0.3f)
+Torch::Torch(Vector2 pos, float amount)
 {
     position = pos;
     consumed = false;
