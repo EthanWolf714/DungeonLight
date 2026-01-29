@@ -90,11 +90,11 @@ void Game::Draw(){
         }
 
         // DEBUG: Draw red circle at spawn point
-        DrawCircle(40, 40, 5, RED);
+        //DrawCircle(40, 40, 5, RED);
         
         player.Draw();
             
-        DrawCollisionDebug();
+        //DrawCollisionDebug();
     }
     EndMode2D();
 }
