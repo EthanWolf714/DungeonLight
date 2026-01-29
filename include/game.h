@@ -18,6 +18,7 @@ public:
     void HandleCollisions();
     void CreateLightMask();
     Camera2D GetCamera();
+    void DrawCollisionDebug();
     
 
 private:

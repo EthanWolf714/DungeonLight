@@ -42,7 +42,7 @@ void Player::Draw(){
             
         Vector2 origin = {0.0f,0.0f};
         //player collision box
-        DrawRectangleLines(position.x, position.y, frame_width *scale, frame_height *scale, BLUE);
+       // DrawRectangleLines(position.x, position.y, frame_width *scale, frame_height *scale, BLUE);
         //draw player
         DrawTexturePro(*playerSprite, source, dest, origin, 0.0f, WHITE);
         

@@ -6,7 +6,7 @@ Game::Game(int screenWidth, int screenHeight) : camera(screenWidth, screenHeight
     camera.setCameraTarget(GetPlayerPosition());
 
     spawnPos = {40.0f, 40.0f};
-    dt = GetFrameTime();
+    dt = 0.0f;
 
     map = nullptr;
     
@@ -68,7 +68,7 @@ bool Game::LoadMap(const char* filepath){
 }
 
 void Game::Update(){
-    
+    dt = GetFrameTime();
     HandleInput();
     HandleCollisions();
     player.Update();
@@ -94,6 +94,7 @@ void Game::Draw(){
         
         player.Draw();
             
+        DrawCollisionDebug();
     }
     EndMode2D();
 }
@@ -102,6 +103,7 @@ void Game::HandleInput(){
     player.Move();
 }
 
+
 void Game::HandleCollisions(){
     TmxObjectGroup wallsObjectGroup = {};
 
@@ -109,7 +111,7 @@ void Game::HandleCollisions(){
         const TmxLayer layer = map->layers[i];
         if(strcmp(layer.name, "Walls") == 0 && layer.type == LAYER_TYPE_OBJECT_GROUP){
             wallsObjectGroup = layer.exact.objectGroup;
-
+            
             Rectangle playerRec = player.GetFrameRec();
             
             bool collided = CheckCollisionTMXObjectGroupRec(wallsObjectGroup, playerRec, NULL);
@@ -135,5 +137,37 @@ Camera2D Game::GetCamera(){
     return camera.GetCamera();
 }
 
-
+//tool to visualize collisions (made with AI)
+void Game::DrawCollisionDebug(){
+    if(map == nullptr) return;
+    
+    for(unsigned int i = 0; i < map->layersLength; i++){
+        const TmxLayer layer = map->layers[i];
+        if(strcmp(layer.name, "Walls") == 0 && layer.type == LAYER_TYPE_OBJECT_GROUP){
+            TmxObjectGroup wallsObjectGroup = layer.exact.objectGroup;
+            
+            // Draw collision objects (in world space, camera transform is already applied)
+            for(unsigned int j = 0; j < wallsObjectGroup.objectsLength; j++){
+                const TmxObject obj = wallsObjectGroup.objects[j];
+                
+                Rectangle rec = {
+                    (float)obj.x,
+                    (float)obj.y,
+                    (float)obj.width,
+                    (float)obj.height
+                };
+                
+                DrawRectangleLinesEx(rec, 2.0f, RED);
+                DrawRectangle(rec.x, rec.y, rec.width, rec.height, Fade(RED, 0.2f));
+            }
+            
+            // Draw player collision rectangle
+            Rectangle playerRec = player.GetFrameRec();
+            DrawRectangleLinesEx(playerRec, 2.0f, GREEN);
+            DrawRectangle(playerRec.x, playerRec.y, playerRec.width, playerRec.height, Fade(GREEN, 0.2f));
+            
+            break;
+        }
+    }
+}
 
