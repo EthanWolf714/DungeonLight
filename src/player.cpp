@@ -15,6 +15,9 @@ Player::Player(){
     direction = Direction::Down;
     facingLeft = false;
     speed = 90.f;
+    lightLevel = 1.0;
+    drainRate = 1.0f / 120.0f;
+
    
 
     
@@ -48,7 +51,15 @@ void Player::Draw(){
         
 }
 
-void Player::Update(){
+void Player::Update(float dt){
+
+
+    //light will drain over time
+    lightLevel -= drainRate * dt;
+    if(lightLevel < 0.0f){
+        lightLevel = 0.0f;
+        //player is dead
+    }
 
    Animate();
     

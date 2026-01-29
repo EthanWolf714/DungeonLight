@@ -19,6 +19,7 @@ public:
     void CreateLightMask();
     Camera2D GetCamera();
     void DrawCollisionDebug();
+    float GetPlayerLightRadius();
     
 
 private:

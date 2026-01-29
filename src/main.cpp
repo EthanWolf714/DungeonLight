@@ -49,7 +49,7 @@ int main()
             ClearBackground(BLACK);
             game.Draw();
 
-            light.BeginLightMask(game.GetCamera(), game.GetPlayerPosition());
+            light.BeginLightMask(game.GetCamera(), game.GetPlayerPosition(), game.GetPlayerLightRadius());
             light.EndLightMask();
             light.RenderLightMask();
            

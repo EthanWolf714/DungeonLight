@@ -16,7 +16,7 @@ class Light{
         Light(int width, int height);
         ~Light();
 
-        void BeginLightMask(Camera2D camera, Vector2 playerPos);
+        void BeginLightMask(Camera2D camera, Vector2 playerPos, float playerLightRadius);
         void EndLightMask();
         void RenderLightMask();
 

@@ -13,7 +13,7 @@ class Player{
     public:
         Player();
         ~Player();
-        void Update();
+        void Update(float dt);
         void Draw();
         void SetPosition(Vector2 pos);
         Vector2 GetPosition();
@@ -21,6 +21,8 @@ class Player{
         void Animate();
         Rectangle GetFrameRec();
         void UndoMovement();
+        float GetLightLevel() const {return lightLevel;}
+        float GetLightRadius() const {return 30.0f * lightLevel;}
     private:
         Direction direction;
         Vector2 position;
@@ -40,6 +42,8 @@ class Player{
         bool isMoving;
         bool facingLeft;
         float scale;
+        float lightLevel;
+        float drainRate;
         
         
 

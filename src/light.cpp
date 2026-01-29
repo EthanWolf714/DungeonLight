@@ -11,7 +11,7 @@ Light::~Light(){
     UnloadRenderTexture(lightMask);
 }
 
-void Light::BeginLightMask(Camera2D camera, Vector2 playerPos){
+void Light::BeginLightMask(Camera2D camera, Vector2 playerPos, float playerLightRadius){
     //update hole where player position is
         BeginTextureMode(lightMask);
         ClearBackground(BLACK);
@@ -29,8 +29,8 @@ void Light::BeginLightMask(Camera2D camera, Vector2 playerPos){
             float centerX = playerPos.x + (16 * 1.0) / 2.0f;
             float centerY = playerPos.y + (16 * 1.0) / 2.0f;
             //draw blank whole in texture.
-            DrawCircleGradient(centerX, centerY, 30, (Color){0,0,0,0},(Color){0,0,0,200});
-            DrawCircle(centerX, centerY, 15, (Color){0,0,0,100});
+            DrawCircleGradient(centerX, centerY, playerLightRadius, (Color){0,0,0,0},(Color){0,0,0,200});
+            DrawCircle(centerX, centerY, playerLightRadius, (Color){0,0,0,100});
 
 
         EndMode2D();

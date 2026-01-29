@@ -71,7 +71,7 @@ void Game::Update(){
     dt = GetFrameTime();
     HandleInput();
     HandleCollisions();
-    player.Update();
+    player.Update(dt);
     
     //update camera position to target player
     camera.setCameraTarget(GetPlayerPosition());
@@ -171,3 +171,6 @@ void Game::DrawCollisionDebug(){
     }
 }
 
+float Game::GetPlayerLightRadius(){
+    return player.GetLightRadius();
+}
