@@ -22,17 +22,21 @@ int main()
 
     Game game(screenWidth, screenHeight);
 
-    Light light(screenWidth, screenHeight);
+     Light light(screenWidth, screenHeight);
 
-        int currentFps = 60;
+    int currentFps = 60;
     SetTargetFPS(currentFps); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
+
+    
 
     if(!game.LoadMap("build/maps/test-map.tmx")){
         CloseWindow();
         return EXIT_FAILURE;
     }
     
+   
+
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {

@@ -3,7 +3,7 @@
 #include "player.h"
 #include "raytmx.h"
 #include "camera.h"
-
+#include "map.h"
 
 class Game
 {
@@ -14,22 +14,18 @@ public:
     void Update();
     void HandleInput();
     Vector2 GetPlayerPosition();
-    bool LoadMap(const char* filepath);
     void HandleCollisions();
     void CreateLightMask();
     Camera2D GetCamera();
     void DrawCollisionDebug();
     float GetPlayerLightRadius();
-    
+    bool LoadMap(const char* filepath);
 
 private:
-
+    Map currentMap;
     Player player;
     GameCamera camera;
-    TmxMap* map;
-    Vector2 spawnPos;
     float dt;
-    
     
 };
 

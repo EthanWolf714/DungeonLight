@@ -2,65 +2,25 @@
 #include "raytmx.h"
 
 Game::Game(int screenWidth, int screenHeight) : camera(screenWidth, screenHeight){
-
+    
     camera.setCameraTarget(GetPlayerPosition());
 
-    spawnPos = {40.0f, 40.0f};
     dt = 0.0f;
-
-    map = nullptr;
-    
-
-
-
 }
 
 Game::~Game(){
-    if(map != nullptr){
-        UnloadTMX(map);
-    }
+    
 }
 
 bool Game::LoadMap(const char* filepath){
     //initialize tile map
-    map = LoadTMX(filepath);
-    if (map == NULL)
-    {
-        TraceLog(LOG_ERROR, "Failed to load TMX map");
-        return false;
-
+   if(!currentMap.Load(filepath)) {
+            return false;
     }
-    TraceLog(LOG_INFO, "Map Loaded Successfully!");
     
-    
-
-    //loop through tilemap layers
-    for(unsigned int i = 0; i < map->layersLength; i++){
-        const TmxLayer layer = map->layers[i];
-        //loop through objects group
-        if(layer.type == LAYER_TYPE_OBJECT_GROUP){
-            TmxObjectGroup objGroup = layer.exact.objectGroup;
-            //loop through object layer
-            for(unsigned int j = 0; j < objGroup.objectsLength; j++){
-                const TmxObject object = objGroup.objects[j];
-                //location spawn point object
-                if(object.name != NULL && strcmp(object.name, "spawn") == 0){
-                    //offset spawn positition for player sprite
-                    spawnPos.x = object.x - 8;
-                    spawnPos.y = object.y - 8;
-                    //TraceLog(LOG_INFO, "Spawn object position: x=%.2f, y=%.2f", object.x, object.y);
-                    //TraceLog(LOG_INFO, "Spawn object size: w=%.2f, h=%.2f", object.width, object.height);
-                    
-                    break;
-                    
-
-                }
-            }
-        }
-    }
     //set player position to spawn point
-    player.SetPosition(spawnPos);
-    camera.setCameraTarget(spawnPos);
+    player.SetPosition(currentMap.GetSpawnPosition());
+    camera.setCameraTarget(currentMap.GetSpawnPosition());
 
     return true;
 
@@ -83,11 +43,8 @@ void Game::Draw(){
     
     BeginMode2D(camera.GetCamera());
     {
-        //draw map first(background)
-        if(map != nullptr){
-            AnimateTMX(map);
-            DrawTMX(map, NULL, NULL, 0, 0, WHITE);
-        }
+        //TraceLog(LOG_INFO, "Drawing map");
+        currentMap.Draw(0,0,WHITE);
 
         // DEBUG: Draw red circle at spawn point
         //DrawCircle(40, 40, 5, RED);
@@ -105,28 +62,20 @@ void Game::HandleInput(){
 
 
 void Game::HandleCollisions(){
-    TmxObjectGroup wallsObjectGroup = {};
-
-    //loop through tile layers
-    for(unsigned int i = 0; i < map->layersLength; i++){
-        const TmxLayer layer = map->layers[i];
-        // go through walls object layer
-        if(strcmp(layer.name, "Walls") == 0 && layer.type == LAYER_TYPE_OBJECT_GROUP){
-            wallsObjectGroup = layer.exact.objectGroup;
-            
-            Rectangle playerRec = player.GetFrameRec();
-            
-            bool collided = CheckCollisionTMXObjectGroupRec(wallsObjectGroup, playerRec, NULL);
-            
-         
+    //get wall collisions objects
+    const std::vector<Rectangle>& walls = currentMap.GetCollisionBoxes();
+    Rectangle playerRec = player.GetFrameRec();   
+    //loop through wall collisions
+    for(const Rectangle& wall: walls){          
+            bool collided = CheckCollisionRecs(playerRec, wall);
 
             if(collided){
-                //TraceLog(LOG_INFO, "COLLISION DETECTED! Sending player to spawn");
                 player.UndoMovement();
+                break;  
             }
     
-            break;  // Found it, stop searching layers
-        }
+            
+        
     }
     
 }
@@ -139,38 +88,27 @@ Camera2D Game::GetCamera(){
     return camera.GetCamera();
 }
 
-//tool to visualize collisions (made with AI)
+
+
+//tool to visualize collisions
 void Game::DrawCollisionDebug(){
-    if(map == nullptr) return;
-    
-    for(unsigned int i = 0; i < map->layersLength; i++){
-        const TmxLayer layer = map->layers[i];
-        if(strcmp(layer.name, "Walls") == 0 && layer.type == LAYER_TYPE_OBJECT_GROUP){
-            TmxObjectGroup wallsObjectGroup = layer.exact.objectGroup;
-            
-            // Draw collision objects (in world space, camera transform is already applied)
-            for(unsigned int j = 0; j < wallsObjectGroup.objectsLength; j++){
-                const TmxObject obj = wallsObjectGroup.objects[j];
+
+    //get wall collisions objects
+    const std::vector<Rectangle>& walls = currentMap.GetCollisionBoxes();
+    //draw each wall box
+    for(const Rectangle& wall: walls){          
                 
-                Rectangle rec = {
-                    (float)obj.x,
-                    (float)obj.y,
-                    (float)obj.width,
-                    (float)obj.height
-                };
-                
-                DrawRectangleLinesEx(rec, 2.0f, RED);
-                DrawRectangle(rec.x, rec.y, rec.width, rec.height, Fade(RED, 0.2f));
-            }
+        DrawRectangleLinesEx(wall, 2.0f, RED);
+        DrawRectangle(wall.x, wall.y, wall.width, wall.height, Fade(RED, 0.2f));
             
-            // Draw player collision rectangle
-            Rectangle playerRec = player.GetFrameRec();
-            DrawRectangleLinesEx(playerRec, 2.0f, GREEN);
-            DrawRectangle(playerRec.x, playerRec.y, playerRec.width, playerRec.height, Fade(GREEN, 0.2f));
-            
-            break;
-        }
+        
     }
+            
+    // Draw player collision rectangle
+    Rectangle playerRec = player.GetFrameRec();
+    DrawRectangleLinesEx(playerRec, 2.0f, GREEN);
+    DrawRectangle(playerRec.x, playerRec.y, playerRec.width, playerRec.height, Fade(GREEN, 0.2f));
+            
 }
 
 float Game::GetPlayerLightRadius(){
