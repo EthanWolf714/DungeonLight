@@ -24,8 +24,8 @@ int main()
 
     Light light(screenWidth, screenHeight);
 
-
-    SetTargetFPS(60); // Set our game to run at 60 frames-per-second
+        int currentFps = 60;
+    SetTargetFPS(currentFps); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
     if(!game.LoadMap("build/maps/test-map.tmx")){
@@ -47,12 +47,17 @@ int main()
         //----------------------------------------------------------------------------------
         BeginDrawing();
             ClearBackground(BLACK);
+            
             game.Draw();
-
+           
             light.BeginLightMask(game.GetCamera(), game.GetPlayerPosition(), game.GetPlayerLightRadius());
             light.EndLightMask();
             light.RenderLightMask();
-           
+            
+            const char *fpsText = 0;
+            if (currentFps <= 0) fpsText = TextFormat("FPS: unlimited (%i)", GetFPS());
+            else fpsText = TextFormat("FPS: %i (target: %i)", GetFPS(), currentFps);
+            DrawText(fpsText, 10, 10, 20, WHITE);
         EndDrawing();
         //----------------------------------------------------------------------------------
     }

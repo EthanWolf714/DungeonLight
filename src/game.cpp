@@ -107,8 +107,10 @@ void Game::HandleInput(){
 void Game::HandleCollisions(){
     TmxObjectGroup wallsObjectGroup = {};
 
+    //loop through tile layers
     for(unsigned int i = 0; i < map->layersLength; i++){
         const TmxLayer layer = map->layers[i];
+        // go through walls object layer
         if(strcmp(layer.name, "Walls") == 0 && layer.type == LAYER_TYPE_OBJECT_GROUP){
             wallsObjectGroup = layer.exact.objectGroup;
             

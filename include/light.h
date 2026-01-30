@@ -12,6 +12,7 @@ class Light{
         RenderTexture2D lightMask;
         int screenWidth;
         int screenHeight;
+        int lightScale;
     public:
         Light(int width, int height);
         ~Light();
