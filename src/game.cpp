@@ -47,9 +47,12 @@ void Game::Update()
     HandleCollisions();
     player.Update(dt);
 
-    for(Torch& t : torches){
+    /*
+        for(Torch& t : torches){
         t.CheckCollisions(player);
     }
+    */
+    
 
     // update camera position to target player
     camera.setCameraTarget(GetPlayerPosition());

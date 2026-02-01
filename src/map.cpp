@@ -79,7 +79,7 @@ bool Map::Load(const char *filepath)
                         // offset spawn positition for player sprite
                         spawnPos.x = object.x - 8;
                         spawnPos.y = object.y - 8;
-                        TraceLog(LOG_INFO, "Spawn object position: x=%.2f, y=%.2f", object.x, object.y);
+                        //TraceLog(LOG_INFO, "Spawn object position: x=%.2f, y=%.2f", object.x, object.y);
                         // TraceLog(LOG_INFO, "Spawn object size: w=%.2f, h=%.2f", object.width, object.height);
                     }else if(strcmp(object.name, "torch") == 0){
                         torchPositions.push_back({(float)object.x, (float)object.y});

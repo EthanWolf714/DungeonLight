@@ -29,7 +29,6 @@ private:
     GameCamera camera;
     float dt;
     std::vector<Torch> torches;
-    
 };
 
 #endif
