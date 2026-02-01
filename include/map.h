@@ -12,6 +12,8 @@ private:
     int objectLayerIndex;
 
     std::vector<Rectangle> collisionBoxes;
+    std::vector<Vector2> torchPositions;
+
 
 public:
     Map();
@@ -22,6 +24,7 @@ public:
     void Unload();
     const TmxLayer* GetLayer(int index) const;
     const std::vector<Rectangle>& GetCollisionBoxes() const;
+     const std::vector<Vector2>& GetTorchPositions() const;
 
 };
 

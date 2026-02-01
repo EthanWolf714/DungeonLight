@@ -2,6 +2,8 @@
 #include "raytmx.h"
 Map::Map()
 {
+    // init map as null so map!= null check doesn't pass
+    map = NULL;
     objectLayerIndex = -1;
     spawnPos = {40.0f, 40.0f};
 }
@@ -13,25 +15,28 @@ Map::~Map()
 
 void Map::Unload()
 {
+    //TraceLog(LOG_INFO, "=== Unload() START ===");
     if (map != NULL)
     {
+         TraceLog(LOG_INFO, "Unloading TMX...");
         UnloadTMX(map);
         map = NULL;
+        TraceLog(LOG_INFO, "TMX unloaded");
     }
-
     objectLayerIndex = -1;
 
-    collisionBoxes.clear();
+   // collisionBoxes.clear();
     spawnPos = {40.0f, 40.0f};
 }
 
 bool Map::Load(const char *filepath)
 {
-
+    
     Unload();
 
     // initialize tile map
     map = LoadTMX(filepath);
+
     if (map == NULL)
     {
         TraceLog(LOG_ERROR, "Failed to load TMX map");
@@ -74,8 +79,11 @@ bool Map::Load(const char *filepath)
                         // offset spawn positition for player sprite
                         spawnPos.x = object.x - 8;
                         spawnPos.y = object.y - 8;
-                        // TraceLog(LOG_INFO, "Spawn object position: x=%.2f, y=%.2f", object.x, object.y);
+                        TraceLog(LOG_INFO, "Spawn object position: x=%.2f, y=%.2f", object.x, object.y);
                         // TraceLog(LOG_INFO, "Spawn object size: w=%.2f, h=%.2f", object.width, object.height);
+                    }else if(strcmp(object.name, "torch") == 0){
+                        torchPositions.push_back({(float)object.x, (float)object.y});
+                        TraceLog(LOG_INFO, "Loaded %d torches", torchPositions.size());
                     }
                     else if (isWallsLayer)
                     {
@@ -117,4 +125,9 @@ const TmxLayer *Map::GetLayer(int index) const
 const std::vector<Rectangle> &Map::GetCollisionBoxes() const
 {
     return collisionBoxes;
+}
+
+const std::vector<Vector2>& Map::GetTorchPositions() const
+{
+    return torchPositions;
 }

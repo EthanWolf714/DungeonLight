@@ -22,7 +22,7 @@ class Player{
         Rectangle GetFrameRec();
         void UndoMovement();
         float GetLightLevel() const {return lightLevel;}
-        float GetLightRadius() const {return 100.0f * lightLevel;}
+        float GetLightRadius() const {return 50.0f * lightLevel;}
     private:
         Direction direction;
         Vector2 position;

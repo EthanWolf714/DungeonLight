@@ -20,6 +20,7 @@ public:
     void DrawCollisionDebug();
     float GetPlayerLightRadius();
     bool LoadMap(const char* filepath);
+    std::vector<Vector2> GetTorchLocations();
 
 private:
     Map currentMap;

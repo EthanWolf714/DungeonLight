@@ -22,21 +22,23 @@ int main()
 
     Game game(screenWidth, screenHeight);
 
-     Light light(screenWidth, screenHeight);
+    Light light(screenWidth, screenHeight);
 
     int currentFps = 60;
     SetTargetFPS(currentFps); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
     
-
+    TraceLog(LOG_INFO, "=== About to load map ===");
     if(!game.LoadMap("build/maps/test-map.tmx")){
+        TraceLog(LOG_ERROR, "MAP LOAD FAILED!");
         CloseWindow();
         return EXIT_FAILURE;
     }
+    TraceLog(LOG_INFO, "=== Map loaded successfully ===");
     
-   
-
+    auto torchPos = game.GetTorchLocations();
+    TraceLog(LOG_INFO, "Passing %d torches to lighting", torchPos.size());
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
@@ -54,7 +56,9 @@ int main()
             
             game.Draw();
            
-            light.BeginLightMask(game.GetCamera(), game.GetPlayerPosition(), game.GetPlayerLightRadius());
+           
+            
+            light.BeginLightMask(game.GetCamera(), game.GetPlayerPosition(), game.GetPlayerLightRadius(),torchPos);
             light.EndLightMask();
             light.RenderLightMask();
             
