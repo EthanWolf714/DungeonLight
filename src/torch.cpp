@@ -5,10 +5,16 @@ Torch::Torch(Vector2 pos, float amount)
     position = pos;
     consumed = false;
     restoreAmount = amount;
+    torchSprite = LoadTexture("build/assets/Torch.png");
 }
 
 Torch::~Torch()
 {
+    UnloadTexture(torchSprite);
+}
+
+void Torch::Draw(){
+    DrawTexture(torchSprite, position.x,position.y, WHITE);
 }
 
 

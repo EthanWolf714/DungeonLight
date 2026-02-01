@@ -83,6 +83,7 @@ bool Map::Load(const char *filepath)
                         // TraceLog(LOG_INFO, "Spawn object size: w=%.2f, h=%.2f", object.width, object.height);
                     }else if(strcmp(object.name, "torch") == 0){
                         torchPositions.push_back({(float)object.x, (float)object.y});
+                
                         TraceLog(LOG_INFO, "Loaded %d torches", torchPositions.size());
                     }
                     else if (isWallsLayer)

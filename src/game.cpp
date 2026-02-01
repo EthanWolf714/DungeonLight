@@ -1,9 +1,9 @@
 #include "game.h"
 #include "raytmx.h"
 
+
 Game::Game(int screenWidth, int screenHeight) : camera(screenWidth, screenHeight)
 {
-
     //camera.setCameraTarget(GetPlayerPosition());
 
     dt = 0.0f;
@@ -22,9 +22,15 @@ bool Game::LoadMap(const char *filepath)
         return false;
     }
 
+    for(Vector2 pos: currentMap.GetTorchPositions()){
+        torches.emplace_back(pos, 0.3);
+    }
+
     // set player position to spawn point
     player.SetPosition(currentMap.GetSpawnPosition());
     camera.setCameraTarget(currentMap.GetSpawnPosition());
+    
+   
 
     return true;
 }
@@ -41,6 +47,10 @@ void Game::Update()
     HandleCollisions();
     player.Update(dt);
 
+    for(Torch& t : torches){
+        t.CheckCollisions(player);
+    }
+
     // update camera position to target player
     camera.setCameraTarget(GetPlayerPosition());
 }
@@ -52,6 +62,13 @@ void Game::Draw()
     {
         // TraceLog(LOG_INFO, "Drawing map");
         currentMap.Draw(0, 0, WHITE);
+        
+        for(Torch& t : torches){
+            if(!t.IsConsumed()){
+                t.Draw();
+            }
+        }
+        
 
         // DEBUG: Draw red circle at spawn point
         // DrawCircle(40, 40, 5, RED);

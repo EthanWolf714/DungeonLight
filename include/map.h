@@ -2,6 +2,7 @@
 #define MAP_H
 #include "raytmx.h"
 #include <vector>
+#include "torch.h"
 
 class Map
 {
@@ -24,7 +25,9 @@ public:
     void Unload();
     const TmxLayer* GetLayer(int index) const;
     const std::vector<Rectangle>& GetCollisionBoxes() const;
-     const std::vector<Vector2>& GetTorchPositions() const;
+    const std::vector<Vector2>& GetTorchPositions() const;
+    
+   
 
 };
 

@@ -4,6 +4,7 @@
 #include "raytmx.h"
 #include "camera.h"
 #include "map.h"
+#include "torch.h"
 
 class Game
 {
@@ -27,6 +28,7 @@ private:
     Player player;
     GameCamera camera;
     float dt;
+    std::vector<Torch> torches;
     
 };
 

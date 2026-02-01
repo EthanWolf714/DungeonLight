@@ -8,6 +8,7 @@ class Torch{
        Vector2 position;
        bool consumed;
        float restoreAmount;
+       Texture2D torchSprite;
 
 
     public:
@@ -17,6 +18,7 @@ class Torch{
      void CheckCollisions(Player& player);
      bool IsConsumed();
      Vector2 GetPosition();
+     void Draw();
 
 };
 
