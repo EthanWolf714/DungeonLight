@@ -15,7 +15,7 @@ Player::Player(){
     direction = Direction::Down;
     facingLeft = false;
     speed = 90.f;
-    lightLevel = 1.0;
+    lightLevel = .5;
     drainRate = 1.0f / 120.0f;
 
    
@@ -150,5 +150,11 @@ Rectangle Player::GetFrameRec(){
 
 void Player::UndoMovement(){
     position = previousPosition;
+}
+
+void Player::RestoreAmount(float amount)
+{
+    lightLevel += amount;
+    if(lightLevel > 1.0f) lightLevel = 1.0f;
 }
 

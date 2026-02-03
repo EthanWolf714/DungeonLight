@@ -37,7 +37,13 @@ bool Game::LoadMap(const char *filepath)
 
 std::vector<Vector2> Game::GetTorchLocations()
 {
-    return currentMap.GetTorchPositions();
+    std::vector<Vector2> positions;
+    for(Torch& torch : torches){
+        if(!torch.IsConsumed()){
+            positions.push_back(torch.GetPosition());
+        }
+    }
+    return positions;
 }
 
 void Game::Update()
@@ -47,11 +53,11 @@ void Game::Update()
     HandleCollisions();
     player.Update(dt);
 
-    /*
-        for(Torch& t : torches){
-        t.CheckCollisions(player);
+    //check torch collison
+    for(Torch& torch : torches){
+        torch.CheckCollisions(player);
     }
-    */
+    
     
 
     // update camera position to target player
@@ -66,9 +72,9 @@ void Game::Draw()
         // TraceLog(LOG_INFO, "Drawing map");
         currentMap.Draw(0, 0, WHITE);
         
-        for(Torch& t : torches){
-            if(!t.IsConsumed()){
-                t.Draw();
+        for(Torch& torch : torches){
+            if(!torch.IsConsumed()){
+                torch.Draw();
             }
         }
         

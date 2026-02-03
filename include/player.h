@@ -23,6 +23,7 @@ class Player{
         void UndoMovement();
         float GetLightLevel() const {return lightLevel;}
         float GetLightRadius() const {return 50.0f * lightLevel;}
+        void RestoreAmount(float amount);
     private:
         Direction direction;
         Vector2 position;
