@@ -14,6 +14,7 @@ private:
     int screenWidth;
     int screenHeight;
     int lightScale;
+    Shader ditherShader;
 
 public:
     Light(int width, int height);
@@ -22,6 +23,7 @@ public:
     void BeginLightMask(Camera2D camera, Vector2 playerPos, float playerLightRadius, std::vector<Vector2> torchPos);
     void EndLightMask();
     void RenderLightMask();
+    void LoadDitherShader();
 };
 
 #endif

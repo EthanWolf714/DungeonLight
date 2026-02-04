@@ -37,8 +37,7 @@ int main()
     }
     TraceLog(LOG_INFO, "=== Map loaded successfully ===");
     
-    auto torchPos = game.GetTorchLocations();
-    TraceLog(LOG_INFO, "Passing %d torches to lighting", torchPos.size());
+    
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
@@ -56,7 +55,7 @@ int main()
             
             game.Draw();
            
-           
+            auto torchPos = game.GetTorchLocations();
             
             light.BeginLightMask(game.GetCamera(), game.GetPlayerPosition(), game.GetPlayerLightRadius(),torchPos);
             light.EndLightMask();

@@ -5,6 +5,9 @@ Light::Light(int width, int height) :screenWidth(width), screenHeight(height) {
     //make a render texture that we can put a whole in
     // JeffM2501 example for texutre with hole in it
     lightMask = LoadRenderTexture(screenWidth, screenHeight);
+
+    //load dither shader
+    ditherShader = LoadShader(0,"build/assets/shaders/dither.fs" );
 }
 
 Light::~Light(){
@@ -50,6 +53,11 @@ void Light::EndLightMask(){
 }
 
 void Light::RenderLightMask(){
+    BeginShaderMode(ditherShader);
        // render textures are upside down from the screen, so we need to flip it to have it display correctly
-        DrawTexturePro(lightMask.texture, (Rectangle){0,0, (float)screenWidth, - (float)screenHeight}, (Rectangle){0,0,(float)screenWidth, (float)screenHeight},Vector2Zero(), 0, WHITE );
+    DrawTexturePro(lightMask.texture, 
+        (Rectangle){0,0, (float)screenWidth, - (float)screenHeight}, 
+        (Rectangle){0,0,(float)screenWidth, (float)screenHeight},
+        Vector2Zero(), 0, WHITE );
+    EndShaderMode();
 }

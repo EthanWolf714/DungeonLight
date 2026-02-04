@@ -23,11 +23,13 @@ void Torch::CheckCollisions(Player& player){
     //if torch is not consumed check collisions radius between player and torch
     if(!consumed){
         float dist = Vector2Distance(player.GetPosition(), position);
+        //TraceLog(LOG_INFO, "Distance to torch: %.2f", dist);
         if(dist < 16.0f){
             //restore light to players light level
             //consume torch
             player.RestoreAmount(restoreAmount);
-             consumed = true;
+            TraceLog(LOG_INFO, "TORCH CONSUMED!");
+            consumed = true;
              
         } 
     }
