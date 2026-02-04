@@ -4,7 +4,7 @@
 
 
 Player::Player(){
-    player_rightLeft = LoadTexture("build/assets/wizard_rightLeft.png");
+    player_rightLeft = LoadTexture("build/assets/wizard_right.png");
     player_up = LoadTexture("build/assets/wizard_up.png");
     player_down = LoadTexture("build/assets/wizard_down.png");
     playerSprite = &player_down; //start facing down

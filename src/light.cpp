@@ -32,13 +32,13 @@ void Light::BeginLightMask(Camera2D camera, Vector2 playerPos, float playerLight
             float centerX = playerPos.x + (16 * 1.0) / 2.0f;
             float centerY = playerPos.y + (16 * 1.0) / 2.0f;
             //draw blank whole in texture.
-            DrawCircleGradient(centerX, centerY, playerLightRadius, (Color){0,0,0,0},(Color){0,0,0,200});
+            DrawCircleGradient(centerX, centerY, playerLightRadius, (Color){0,0,0,100},(Color){0,0,0,200});
            // DrawCircle(centerX, centerY, playerLightRadius, (Color){0,0,0,50});
 
             for(const auto& torch : torchPos ){
                 float tx = torch.x  + 8.0f;
                 float ty = torch.y + 8.0f;
-                DrawCircleGradient(tx, ty, 10.0f, (Color){0,0,0,0}, (Color){0,0,0,200});
+                DrawCircleGradient(tx, ty, 10.0f, (Color){0,0,0,100}, (Color){0,0,0,200});
             }
 
 

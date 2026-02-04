@@ -51,7 +51,7 @@ int main()
         // Draw
         //----------------------------------------------------------------------------------
         BeginDrawing();
-            ClearBackground(BLACK);
+            ClearBackground(DARKGREEN);
             
             game.Draw();
            
