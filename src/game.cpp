@@ -55,7 +55,11 @@ void Game::Update()
     //TraceLog(LOG_INFO, "Torch count: %d", torches.size());
     //check torch collison
     for(Torch& torch : torches){
-        torch.CheckCollisions(player);
+        if(torch.CheckCollisions(GetPlayerPosition(), 16.0f)){
+            player.RestoreAmount(torch.GetRestoreAmount());
+        }
+        
+
     }
     
     

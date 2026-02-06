@@ -5,6 +5,7 @@
 #include "camera.h"
 #include "map.h"
 #include "torch.h"
+#include "light.h"
 
 class Game
 {
@@ -22,6 +23,7 @@ public:
     float GetPlayerLightRadius();
     bool LoadMap(const char* filepath);
     std::vector<Vector2> GetTorchLocations();
+   // void RenderLight(Light light);
 
 private:
     Map currentMap;

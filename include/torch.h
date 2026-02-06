@@ -9,16 +9,19 @@ class Torch{
        bool consumed;
        float restoreAmount;
        Texture2D torchSprite;
+       Vector2 playerPos;
+       float radius;
 
 
     public:
      Torch(Vector2 pos, float amount = 0.3f);
      ~Torch();
      void Update();
-     void CheckCollisions(Player& player);
+     bool CheckCollisions(Vector2 playerPos, float radius);
      bool IsConsumed();
      Vector2 GetPosition();
      void Draw();
+     float GetRestoreAmount();
 
 };
 
