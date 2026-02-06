@@ -5,17 +5,17 @@
 Game::Game(int screenWidth, int screenHeight) : camera(screenWidth, screenHeight)
 {
     //camera.setCameraTarget(GetPlayerPosition());
-
     dt = 0.0f;
+    
 }
 
 Game::~Game()
 {
+    
 }
 
 bool Game::LoadMap(const char *filepath)
-{
-     
+{ 
     // initialize tile map
     if (!currentMap.Load(filepath))
     {
@@ -23,22 +23,20 @@ bool Game::LoadMap(const char *filepath)
     }
 
     for(Vector2 pos: currentMap.GetTorchPositions()){
-        torches.emplace_back(pos, 0.3);
+        entityManager.SpawnTorch(pos, 0.3);
     }
 
     // set player position to spawn point
-    player.SetPosition(currentMap.GetSpawnPosition());
+    entityManager.SetPlayerPos(currentMap.GetSpawnPosition());
     camera.setCameraTarget(currentMap.GetSpawnPosition());
     
-   
-
     return true;
 }
 
 std::vector<Vector2> Game::GetTorchLocations()
 {
     std::vector<Vector2> positions;
-    for(Torch& torch : torches){
+    for(Torch& torch : entityManager.GetTorches()){
         if(!torch.IsConsumed()){
             positions.push_back(torch.GetPosition());
         }
@@ -51,21 +49,10 @@ void Game::Update()
     dt = GetFrameTime();
     HandleInput();
     HandleCollisions();
-    player.Update(dt);
+    entityManager.Update(dt);
     //TraceLog(LOG_INFO, "Torch count: %d", torches.size());
-    //check torch collison
-    for(Torch& torch : torches){
-        if(torch.CheckCollisions(GetPlayerPosition(), 16.0f)){
-            player.RestoreAmount(torch.GetRestoreAmount());
-        }
-        
-
-    }
-    
-    
-
     // update camera position to target player
-    camera.setCameraTarget(GetPlayerPosition());
+    camera.setCameraTarget(entityManager.GetPlayerPos());
 }
 
 void Game::Draw()
@@ -76,18 +63,9 @@ void Game::Draw()
         // TraceLog(LOG_INFO, "Drawing map");
         currentMap.Draw(0, 0, WHITE);
         
-        for(Torch& torch : torches){
-            if(!torch.IsConsumed()){
-                torch.Draw();
-            }
-        }
-        
-
+        entityManager.Draw();
         // DEBUG: Draw red circle at spawn point
         // DrawCircle(40, 40, 5, RED);
-
-        player.Draw();
-
         // DrawCollisionDebug();
     }
     EndMode2D();
@@ -95,14 +73,14 @@ void Game::Draw()
 
 void Game::HandleInput()
 {
-    player.Move();
+    entityManager.GetPlayerInput();
 }
 
 void Game::HandleCollisions()
 {
     // get wall collisions objects
     const std::vector<Rectangle> &walls = currentMap.GetCollisionBoxes();
-    Rectangle playerRec = player.GetFrameRec();
+    Rectangle playerRec = entityManager.GetPlayerFrameRec();
     // loop through wall collisions
     for (const Rectangle &wall : walls)
     {
@@ -110,7 +88,7 @@ void Game::HandleCollisions()
 
         if (collided)
         {
-            player.UndoMovement();
+            entityManager.UndoPlayerMovement();
             break;
         }
     }
@@ -118,7 +96,7 @@ void Game::HandleCollisions()
 
 Vector2 Game::GetPlayerPosition()
 {
-    return player.GetPosition();
+    return entityManager.GetPlayerPos();
 }
 
 Camera2D Game::GetCamera()
@@ -141,12 +119,14 @@ void Game::DrawCollisionDebug()
     }
 
     // Draw player collision rectangle
-    Rectangle playerRec = player.GetFrameRec();
+    Rectangle playerRec = entityManager.GetPlayerFrameRec();
     DrawRectangleLinesEx(playerRec, 2.0f, GREEN);
     DrawRectangle(playerRec.x, playerRec.y, playerRec.width, playerRec.height, Fade(GREEN, 0.2f));
 }
 
 float Game::GetPlayerLightRadius()
 {
-    return player.GetLightRadius();
+    return entityManager.GetPlayerLightRadius();
 }
+
+

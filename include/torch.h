@@ -8,7 +8,7 @@ class Torch{
        Vector2 position;
        bool consumed;
        float restoreAmount;
-       Texture2D torchSprite;
+       static Texture2D torchSprite;
        Vector2 playerPos;
        float radius;
 
@@ -22,6 +22,8 @@ class Torch{
      Vector2 GetPosition();
      void Draw();
      float GetRestoreAmount();
+     static void LoadSharedTexture();
+     static void UnloadSharedTexture();
 
 };
 

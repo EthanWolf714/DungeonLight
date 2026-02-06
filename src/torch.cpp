@@ -1,16 +1,17 @@
 #include "torch.h"
-
+//static shared texture
+Texture2D Torch::torchSprite = {0};
 Torch::Torch(Vector2 pos, float amount)
 {
     position = pos;
     consumed = false;
     restoreAmount = amount;
-    torchSprite = LoadTexture("build/assets/Torch.png");
+    
 }
 
 Torch::~Torch()
 {
-    UnloadTexture(torchSprite);
+   
 }
 
 void Torch::Draw(){
@@ -20,6 +21,16 @@ void Torch::Draw(){
 float Torch::GetRestoreAmount()
 {
     return restoreAmount;
+}
+
+void Torch::LoadSharedTexture()
+{
+    torchSprite = LoadTexture("build/assets/Torch.png");
+}
+
+void Torch::UnloadSharedTexture()
+{
+     UnloadTexture(torchSprite);
 }
 
 

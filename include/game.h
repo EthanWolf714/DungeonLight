@@ -1,11 +1,10 @@
 #ifndef GAME_H
 #define GAME_H
-#include "player.h"
 #include "raytmx.h"
 #include "camera.h"
 #include "map.h"
-#include "torch.h"
 #include "light.h"
+#include "entityManager.h"
 
 class Game
 {
@@ -27,10 +26,9 @@ public:
 
 private:
     Map currentMap;
-    Player player;
     GameCamera camera;
     float dt;
-    std::vector<Torch> torches;
+    EntityManager entityManager;
 };
 
 #endif

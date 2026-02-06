@@ -8,14 +8,14 @@ Player::Player(){
     player_up = LoadTexture("build/assets/wizard_up.png");
     player_down = LoadTexture("build/assets/wizard_down.png");
     playerSprite = &player_down; //start facing down
-    position = {0,0};
+    //position = {0,0};
     scale = 1.0f;
     frameRec = { 0.0f, 0.0f,frame_width, frame_height}; 
     isMoving  = false;
     direction = Direction::Down;
     facingLeft = false;
     speed = 90.f;
-    lightLevel = .5;
+    lightLevel = 1.0;
     drainRate = 1.0f / 120.0f;
 
    
