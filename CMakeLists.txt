@@ -18,15 +18,23 @@ if(EMSCRIPTEN)
 else()
     set(PLATFORM "Desktop")
 endif()
-
+if(WIN32 AND NOT EMSCRIPTEN)
+    set(raylib_DIR "C:/raylib/lib/cmake/raylib")
+endif()
 # Find raylib (system wide installation)
 if(NOT EMSCRIPTEN)
-    find_package(raylib 5.0 QUIET)
-        
-    if(NOT raylib_FOUND)
-        message(STATUS "raylib not found, attempting to use pkg-config")
-        find_package(PkgConfig REQUIRED)
-        pkg_check_modules(raylib REQUIRED raylib)
+    if(WIN32)
+        # Manual raylib setup for Windows
+        include_directories(C:/raylib/include)
+        link_directories(C:/raylib/lib)
+        set(raylib_FOUND TRUE)
+        # Create an imported target for consistency
+        add_library(raylib STATIC IMPORTED)
+        set_target_properties(raylib PROPERTIES
+            IMPORTED_LOCATION "C:/raylib/lib/libraylib.a"
+        )
+    else()
+        find_package(raylib 5.0 REQUIRED)
     endif()
 else()
 # For web builds, raylib is included with emscription
@@ -48,12 +56,12 @@ file(GLOB_RECURSE SOURCES "src/*.cpp")
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Add include directory
-target_link_libraries(${PROJECT_NAME} PRIVATE 
+target_include_directories(${PROJECT_NAME} PRIVATE 
     ${CMAKE_SOURCE_DIR}/include
 )
 
 # Link raylib
-target_link_libraries(${PROJECT_NAME} raylib)
+target_link_libraries(${PROJECT_NAME} raylib opengl32 gdi32 winmm)
 
 #Platform-specific settings
 if(EMSCRIPTEN)
@@ -83,7 +91,7 @@ if(EMSCRIPTEN)
     )
 elseif(WIN32)
     #Windows-specific libraries
-    target_link_libraries(${PROJECT_NAME} opengl32 gdi32 winm)
+    target_link_libraries(${PROJECT_NAME} opengl32 gdi32 winmm)
 
 
     # Build type settings

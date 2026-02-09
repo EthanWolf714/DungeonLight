@@ -23,7 +23,7 @@
             ],
             "group": {
                 "kind": "build",
-                "isDefault": true
+                "isDefault": false
             },
             "problemMatcher": ["$gcc"]
         },
@@ -58,7 +58,10 @@
                 "build",
                 "-DCMAKE_BUILD_TYPE=Debug"
             ],
-            "group":"build"
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         },
         {
             "label": "CMake build",
@@ -69,14 +72,17 @@
                 "build"
             ],
             "dependsOn":["CMake Configure"],
-            "group": "build"
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         },
         
         {
             "label": "Run",
             "type": "shell",
             "command": "${workspaceFolder}/build/game.exe",
-            "dependsOn": ["Build Debug"],
+            "dependsOn": ["CMake build"],
             "group": {
                 "kind": "test",
                 "isDefault": true
