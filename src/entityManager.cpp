@@ -41,6 +41,12 @@ Vector2 EntityManager::GetPlayerPos()
 void EntityManager::GetPlayerInput()
 {
     player.Move();
+    
+}
+
+void EntityManager::GetPlayerInteraction()
+{
+    player.Interact();
 }
 
 void EntityManager::SetPlayerPos(Vector2 pos)

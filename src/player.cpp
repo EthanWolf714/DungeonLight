@@ -105,6 +105,13 @@ void Player::Move(){
 
 }
 
+void Player::Interact()
+{
+    if(IsKeyPressed(KEY_E)){
+        TraceLog(LOG_INFO, "Player interacted");
+    }
+}
+
 void Player::Animate(){
 
 
@@ -157,4 +164,6 @@ void Player::RestoreAmount(float amount)
     lightLevel += amount;
     if(lightLevel > 1.0f) lightLevel = 1.0f;
 }
+
+
 

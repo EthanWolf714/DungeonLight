@@ -89,6 +89,7 @@ void Game::HandleCollisions()
         if (collided)
         {
             entityManager.UndoPlayerMovement();
+            entityManager.GetPlayerInteraction();
             break;
         }
     }
