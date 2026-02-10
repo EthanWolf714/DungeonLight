@@ -80,7 +80,7 @@ void Game::HandleCollisions()
 {
     // get wall collisions objects
     const std::vector<Rectangle> &walls = currentMap.GetCollisionBoxes();
-    Rectangle playerRec = entityManager.GetPlayerFrameRec();
+    Rectangle playerRec = entityManager.GetPlayerCollisionRec();
     // loop through wall collisions
     for (const Rectangle &wall : walls)
     {
@@ -89,10 +89,13 @@ void Game::HandleCollisions()
         if (collided)
         {
             entityManager.UndoPlayerMovement();
-            entityManager.GetPlayerInteraction();
+            entityManager.UpdatePlayerRects();
             break;
         }
     }
+
+
+    
 }
 
 Vector2 Game::GetPlayerPosition()

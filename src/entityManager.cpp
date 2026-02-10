@@ -44,11 +44,6 @@ void EntityManager::GetPlayerInput()
     
 }
 
-void EntityManager::GetPlayerInteraction()
-{
-    player.Interact();
-}
-
 void EntityManager::SetPlayerPos(Vector2 pos)
 {
     player.SetPosition(pos);
@@ -68,7 +63,22 @@ Rectangle EntityManager::GetPlayerFrameRec()
     return player.GetFrameRec();
 }
 
+Rectangle EntityManager::GetPlayerCollisionRec()
+{
+    return player.GetCollisionRec();
+}
+
+Rectangle EntityManager::GetPlayerObjRec()
+{
+    return player.GetObjectRec();
+}
+
 float EntityManager::GetPlayerLightRadius()
 {
     return player.GetLightRadius();
+}
+
+void EntityManager::UpdatePlayerRects()
+{
+    player.UpdatePlayerRecs();
 }

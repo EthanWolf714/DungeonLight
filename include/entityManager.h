@@ -17,12 +17,14 @@ class EntityManager{
         std::vector<Torch> GetTorches();
         Vector2 GetPlayerPos();
         void GetPlayerInput();
-        void GetPlayerInteraction();
         void SetPlayerPos(Vector2 pos);
         void SpawnTorch(Vector2 pos, float restoreAmount);
         void UndoPlayerMovement();
         Rectangle GetPlayerFrameRec();
+        Rectangle GetPlayerCollisionRec();
+        Rectangle GetPlayerObjRec();
         float GetPlayerLightRadius();
+        void UpdatePlayerRects();
 
 
 

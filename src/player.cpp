@@ -8,9 +8,11 @@ Player::Player(){
     player_up = LoadTexture("build/assets/wizard_up.png");
     player_down = LoadTexture("build/assets/wizard_down.png");
     playerSprite = &player_down; //start facing down
-    //position = {0,0};
+    position = {0,0};
     scale = 1.0f;
-    frameRec = { 0.0f, 0.0f,frame_width, frame_height}; 
+    frameRec = {0.0f,0.0f,frame_width, frame_height}; 
+    collisionRec = {position.x + 4.0f, position.y + 8.0f, 8, 8};
+    objectRec = {position.x - 4.0f, position.y - 4.0f, 24, 24};
     isMoving  = false;
     direction = Direction::Down;
     facingLeft = false;
@@ -44,8 +46,9 @@ void Player::Draw(){
             frame_height * scale };
             
         Vector2 origin = {0.0f,0.0f};
-        //player collision box
-       // DrawRectangleLines(position.x, position.y, frame_width *scale, frame_height *scale, BLUE);
+        
+        DrawRectangleLinesEx(collisionRec, 2, BLUE);
+        DrawRectangleLinesEx(objectRec, 2, GREEN);
         //draw player
         DrawTexturePro(*playerSprite, source, dest, origin, 0.0f, WHITE);
         
@@ -62,7 +65,18 @@ void Player::Update(float dt){
     }
 
    Animate();
+
     
+    
+}
+
+void Player::UpdatePlayerRecs()
+{
+    collisionRec.x = position.x + 4.0f;
+    collisionRec.y = position.y + 8.0f;
+    
+    objectRec.x = position.x - 4.0f;
+    objectRec.y = position.y - 4.0f;
 }
 
 void Player::Move(){
@@ -103,13 +117,8 @@ void Player::Move(){
         position.x -= speed * dt;
     }
 
-}
+     UpdatePlayerRecs();
 
-void Player::Interact()
-{
-    if(IsKeyPressed(KEY_E)){
-        TraceLog(LOG_INFO, "Player interacted");
-    }
 }
 
 void Player::Animate(){
@@ -139,6 +148,7 @@ void Player::Animate(){
 
 void Player::SetPosition(Vector2 pos){
     position = pos;
+     UpdatePlayerRecs();
 }
 
 Vector2 Player::GetPosition(){
@@ -163,6 +173,16 @@ void Player::RestoreAmount(float amount)
 {
     lightLevel += amount;
     if(lightLevel > 1.0f) lightLevel = 1.0f;
+}
+
+Rectangle Player::GetCollisionRec()
+{
+    return collisionRec;
+}
+
+Rectangle Player::GetObjectRec()
+{
+    return objectRec;
 }
 
 

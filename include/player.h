@@ -14,6 +14,7 @@ class Player{
         Player();
         ~Player();
         void Update(float dt);
+        void UpdatePlayerRecs();
         void Draw();
         void SetPosition(Vector2 pos);
         Vector2 GetPosition();
@@ -24,7 +25,8 @@ class Player{
         float GetLightLevel() const {return lightLevel;}
         float GetLightRadius() const {return 50.0f * lightLevel;}
         void RestoreAmount(float amount);
-        void Interact();
+        Rectangle GetCollisionRec();
+        Rectangle GetObjectRec();
     private:
         Direction direction;
         Vector2 position;
@@ -35,6 +37,8 @@ class Player{
         Texture2D player_down;
         Texture2D* playerSprite;
         Rectangle frameRec;
+        Rectangle collisionRec;
+        Rectangle objectRec;
         int frame;
         float runningTime;
         const int maxFrame {1};
