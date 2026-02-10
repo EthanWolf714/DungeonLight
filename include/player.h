@@ -26,7 +26,7 @@ class Player{
         float GetLightRadius() const {return 50.0f * lightLevel;}
         void RestoreAmount(float amount);
         Rectangle GetCollisionRec();
-        Rectangle GetObjectRec();
+        Rectangle GetInteractRec();
     private:
         Direction direction;
         Vector2 position;
@@ -38,7 +38,7 @@ class Player{
         Texture2D* playerSprite;
         Rectangle frameRec;
         Rectangle collisionRec;
-        Rectangle objectRec;
+        Rectangle interactRec;
         int frame;
         float runningTime;
         const int maxFrame {1};

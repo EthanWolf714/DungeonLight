@@ -66,7 +66,12 @@ void Game::Draw()
         entityManager.Draw();
         // DEBUG: Draw red circle at spawn point
         // DrawCircle(40, 40, 5, RED);
-        // DrawCollisionDebug();
+        const std::vector<Rectangle> &objects = currentMap.GetInteractableObjects();
+       
+        for(const Rectangle &object : objects){ 
+            DrawRectangleLinesEx(object, 2, GREEN);     
+        }
+         //DrawCollisionDebug();
     }
     EndMode2D();
 }
@@ -94,6 +99,28 @@ void Game::HandleCollisions()
         }
     }
 
+    const std::vector<Rectangle> &objects = currentMap.GetInteractableObjects();
+    //TraceLog(LOG_INFO, "Number of objects: %d", objects.size());
+    Rectangle playerInteractCollision = entityManager.GetPlayerInteractRec();
+    
+   
+
+    for(const Rectangle &object : objects){ 
+           
+        bool collided = CheckCollisionRecs(playerInteractCollision, object);
+
+        if(collided){
+           TraceLog(LOG_INFO, "Interactable object collided");
+            if(IsKeyPressed(KEY_E)){
+               TraceLog(LOG_INFO, "Interacted with object");
+                break;
+            }
+           
+        }else{
+             TraceLog(LOG_INFO, "Interactable object not colliding");
+        }
+    }
+
 
     
 }
@@ -114,7 +141,8 @@ void Game::DrawCollisionDebug()
 
     // get wall collisions objects
     const std::vector<Rectangle> &walls = currentMap.GetCollisionBoxes();
-    // draw each wall box
+    //const std::vector<Rectangle> &objects = currentMap.GetInteractableObjects();
+   
     for (const Rectangle &wall : walls)
     {
 
@@ -122,10 +150,13 @@ void Game::DrawCollisionDebug()
         DrawRectangle(wall.x, wall.y, wall.width, wall.height, Fade(RED, 0.2f));
     }
 
+    
+
+
     // Draw player collision rectangle
-    Rectangle playerRec = entityManager.GetPlayerFrameRec();
-    DrawRectangleLinesEx(playerRec, 2.0f, GREEN);
-    DrawRectangle(playerRec.x, playerRec.y, playerRec.width, playerRec.height, Fade(GREEN, 0.2f));
+    //Rectangle playerRec = entityManager.GetPlayerFrameRec();
+    //DrawRectangleLinesEx(playerRec, 2.0f, GREEN);
+    //DrawRectangle(playerRec.x, playerRec.y, playerRec.width, playerRec.height, Fade(GREEN, 0.2f));
 }
 
 float Game::GetPlayerLightRadius()

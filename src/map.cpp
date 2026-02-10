@@ -65,6 +65,7 @@ bool Map::Load(const char *filepath)
 
             //check if layer is the Walls layer
             bool isWallsLayer =  (layer.name != NULL && strcmp(layer.name, "Walls") == 0);
+            bool isInteractablesLayer = (layer.name != NULL && strcmp(layer.name, "Interactables") == 0);
 
             // loop through object layer
             for (unsigned int j = 0; j < objGroup.objectsLength; j++)
@@ -85,6 +86,11 @@ bool Map::Load(const char *filepath)
                         torchPositions.push_back({(float)object.x, (float)object.y});
                 
                         TraceLog(LOG_INFO, "Loaded %d torches", torchPositions.size());
+                    }
+                    else if(isInteractablesLayer){
+                        interactableCollisions.push_back({(float)object.x, (float)object.y, (float)object.width,(float)object.height});
+
+                        TraceLog(LOG_INFO, "Loaded %d interactable objects", interactableCollisions.size());
                     }
                     else if (isWallsLayer)
                     {
@@ -131,4 +137,9 @@ const std::vector<Rectangle> &Map::GetCollisionBoxes() const
 const std::vector<Vector2>& Map::GetTorchPositions() const
 {
     return torchPositions;
+}
+
+const std:: vector<Rectangle>& Map::GetInteractableObjects() const
+{
+    return interactableCollisions;
 }

@@ -22,7 +22,7 @@ class EntityManager{
         void UndoPlayerMovement();
         Rectangle GetPlayerFrameRec();
         Rectangle GetPlayerCollisionRec();
-        Rectangle GetPlayerObjRec();
+        Rectangle GetPlayerInteractRec();
         float GetPlayerLightRadius();
         void UpdatePlayerRects();
 

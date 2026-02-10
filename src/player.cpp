@@ -12,7 +12,7 @@ Player::Player(){
     scale = 1.0f;
     frameRec = {0.0f,0.0f,frame_width, frame_height}; 
     collisionRec = {position.x + 4.0f, position.y + 8.0f, 8, 8};
-    objectRec = {position.x - 4.0f, position.y - 4.0f, 24, 24};
+    interactRec = {position.x - 4.0f, position.y - 4.0f, 24, 24};
     isMoving  = false;
     direction = Direction::Down;
     facingLeft = false;
@@ -48,7 +48,7 @@ void Player::Draw(){
         Vector2 origin = {0.0f,0.0f};
         
         DrawRectangleLinesEx(collisionRec, 2, BLUE);
-        DrawRectangleLinesEx(objectRec, 2, GREEN);
+        DrawRectangleLinesEx(interactRec, 2, GREEN);
         //draw player
         DrawTexturePro(*playerSprite, source, dest, origin, 0.0f, WHITE);
         
@@ -75,8 +75,8 @@ void Player::UpdatePlayerRecs()
     collisionRec.x = position.x + 4.0f;
     collisionRec.y = position.y + 8.0f;
     
-    objectRec.x = position.x - 4.0f;
-    objectRec.y = position.y - 4.0f;
+    interactRec.x = position.x - 4.0f;
+    interactRec.y = position.y - 4.0f;
 }
 
 void Player::Move(){
@@ -180,9 +180,9 @@ Rectangle Player::GetCollisionRec()
     return collisionRec;
 }
 
-Rectangle Player::GetObjectRec()
+Rectangle Player::GetInteractRec()
 {
-    return objectRec;
+    return interactRec;
 }
 
 

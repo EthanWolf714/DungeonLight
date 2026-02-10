@@ -14,6 +14,7 @@ private:
 
     std::vector<Rectangle> collisionBoxes;
     std::vector<Vector2> torchPositions;
+    std::vector<Rectangle> interactableCollisions;
 
 
 public:
@@ -26,6 +27,7 @@ public:
     const TmxLayer* GetLayer(int index) const;
     const std::vector<Rectangle>& GetCollisionBoxes() const;
     const std::vector<Vector2>& GetTorchPositions() const;
+    const std:: vector<Rectangle>& GetInteractableObjects() const;
     
    
 

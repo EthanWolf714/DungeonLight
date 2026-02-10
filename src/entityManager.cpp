@@ -68,9 +68,9 @@ Rectangle EntityManager::GetPlayerCollisionRec()
     return player.GetCollisionRec();
 }
 
-Rectangle EntityManager::GetPlayerObjRec()
+Rectangle EntityManager::GetPlayerInteractRec()
 {
-    return player.GetObjectRec();
+    return player.GetInteractRec();
 }
 
 float EntityManager::GetPlayerLightRadius()
