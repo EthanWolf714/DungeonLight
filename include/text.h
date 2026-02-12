@@ -4,15 +4,19 @@
 #include <string>
 class Text{
     private:
-        Rectangle textBox;
+        Rectangle container;
         std::string text;
+        Font font;
+        bool wordWrap;
     public:
         Text();
         ~Text();
-        void DrawTextBox();
-        Rectangle GetTextBoxRect();
-        static void DrawTextBoxSelectable(const std::string& text, Rectangle rec, float fontSize,Color tint);
+        void Draw();
+        void DrawTextBoxed(Font font, std::string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint);
+        static void DrawTextBoxedSelectable(Font font, std::string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, int selectStart, int selectLength, Color selectTint, Color selectBackTint);
 
+        Rectangle GetTextBoxRect();
+        
 };
 
 

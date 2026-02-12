@@ -1,21 +1,29 @@
 #include "text.h"
 
 Text::Text(){
-    
+    container =  { 25.0f, 25.0f, GetScreenWidth() - 50.0f, GetScreenHeight() - 250.0f };
+    font = GetFontDefault();
+    wordWrap = false;
 }
 
 Text::~Text(){
 
 }
 
-Rectangle Text::GetTextBoxRect()
+void Text::Draw()
 {
-    return textBox;
+    DrawRectangleLinesEx(container, 3, GREEN);
+    DrawTextBoxed(font, text, (Rectangle){ container.x + 4, container.y + 4, container.width - 4, container.height - 4 }, 20.0f, 2.0f, wordWrap, GRAY);
+
 }
 
-void Text::DrawTextBoxSelectable( const std::string& text, Rectangle rec, float fontSize,Color tint)
+void Text::DrawTextBoxed(Font font, std::string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint){
+    DrawTextBoxedSelectable(font, text, rec, fontSize, spacing, wordWrap, tint, 0,0,WHITE,WHITE);
+}
+
+void Text::DrawTextBoxedSelectable(Font font, std::string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, int selectStart, int selectLength, Color selectTint, Color selectBackTint)
 {
-    int length = text.length();
+     int length = text.length();
     int start = 0;
     float y = rec.y;
 
@@ -54,3 +62,10 @@ void Text::DrawTextBoxSelectable( const std::string& text, Rectangle rec, float 
         start = end;
     }
 }
+
+Rectangle Text::GetTextBoxRect()
+{
+    return container;
+}
+
+
