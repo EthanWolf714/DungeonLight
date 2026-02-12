@@ -10,7 +10,8 @@ class Text{
         Text();
         ~Text();
         void DrawTextBox();
-        static void DrawTextBoxSelectable(Font font, const std::string& text, Rectangle rec, float fontSize, float spacing, Color tint);
+        Rectangle GetTextBoxRect();
+        static void DrawTextBoxSelectable(const std::string& text, Rectangle rec, float fontSize,Color tint);
 
 };
 

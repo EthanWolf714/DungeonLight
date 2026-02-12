@@ -103,21 +103,36 @@ void Game::HandleCollisions()
     //TraceLog(LOG_INFO, "Number of objects: %d", objects.size());
     Rectangle playerInteractCollision = entityManager.GetPlayerInteractRec();
     
-   
+   bool dialogOpen = false;
 
     for(const Rectangle &object : objects){ 
            
         bool collided = CheckCollisionRecs(playerInteractCollision, object);
 
         if(collided){
-           TraceLog(LOG_INFO, "Interactable object collided");
+           //TraceLog(LOG_INFO, "Interactable object collided");
             if(IsKeyPressed(KEY_E)){
-               TraceLog(LOG_INFO, "Interacted with object");
+                dialogOpen = true;
+                TraceLog(LOG_INFO, "Dialog opened!");
+
+               //TraceLog(LOG_INFO, "Interacted with object");
                 break;
             }
            
         }else{
-             TraceLog(LOG_INFO, "Interactable object not colliding");
+             //TraceLog(LOG_INFO, "Interactable object not colliding");
+        }
+    }
+
+    if(dialogOpen){
+
+        Rectangle rect = interactMessage.GetTextBoxRect();
+        DrawRectangleRec(rect, DARKGRAY); // Draw background
+        DrawRectangleLinesEx(rect, 2, WHITE); // Draw border
+        interactMessage.DrawTextBoxSelectable("LALALALLA", rect, 20.0f, RED);
+
+        if(IsKeyPressed(KEY_E)){
+            dialogOpen = false;
         }
     }
 

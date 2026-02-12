@@ -5,6 +5,7 @@
 #include "map.h"
 #include "light.h"
 #include "entityManager.h"
+#include "text.h"
 
 class Game
 {
@@ -29,6 +30,8 @@ private:
     GameCamera camera;
     float dt;
     EntityManager entityManager;
+    Text interactMessage;
+    
 };
 
 #endif
