@@ -8,6 +8,7 @@ Game::Game(int screenWidth, int screenHeight) : camera(screenWidth, screenHeight
     dt = 0.0f;
     dialogOpen = false;
     dialogText = "";
+    coolDown = 0.0f;
     
 }
 
@@ -60,7 +61,14 @@ void Game::HandleText()
             
 
     }
+
+    if(coolDown > 0.0f){
+        TraceLog(LOG_INFO, "Countdown started: %.1f", coolDown);
+    }else{
+        dialogOpen = false;
+    }
 }
+
 
 void Game::Update()
 {
@@ -131,14 +139,18 @@ void Game::HandleCollisions()
         bool collided = CheckCollisionRecs(playerInteractCollision, object);
 
         if(collided){
+            if(coolDown > 0.0f) coolDown -= dt;
            //TraceLog(LOG_INFO, "Interactable object collided");
-            if(IsKeyPressed(KEY_E)){
+            if(IsKeyPressed(KEY_E) && coolDown <= 0.0f){
                 dialogOpen = true;
                 dialogText = "LALALALALALALALALA";
-
+                coolDown = 3.0f;
               // TraceLog(LOG_INFO, "dialog open");
             
             }
+
+            
+            
            
         }
         

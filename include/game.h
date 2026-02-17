@@ -35,6 +35,7 @@ private:
     bool dialogOpen;
     Text dialogBox;
     std::string dialogText;
+    float coolDown;
     
 };
 
