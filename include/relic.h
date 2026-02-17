@@ -10,11 +10,18 @@ class Relic{
     private:
         enum Type type;
         Vector2 position;
-        Texture2D sprite;
+        Texture2D itemSprite;
+        Texture2D weaponSprite;
+        Texture2D writingSprite;
+
 
     public:
         Relic();
         ~Relic();
+        void Draw();
+        Vector2 GetPosition();
+        void SetSprite(Texture2D sprite);
+        bool CheckCollisions(Vector2 playerPos);
 
 };
 #endif // __RELIC_H__
