@@ -36,6 +36,7 @@ private:
     Text dialogBox;
     std::string dialogText;
     float coolDown;
+    int artifacts;
     
 };
 

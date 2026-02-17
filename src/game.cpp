@@ -9,6 +9,7 @@ Game::Game(int screenWidth, int screenHeight) : camera(screenWidth, screenHeight
     dialogOpen = false;
     dialogText = "";
     coolDown = 0.0f;
+    artifacts = 0;
     
 }
 
