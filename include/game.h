@@ -23,6 +23,7 @@ public:
     float GetPlayerLightRadius();
     bool LoadMap(const char* filepath);
     std::vector<Vector2> GetTorchLocations();
+    void HandleText();
    // void RenderLight(Light light);
 
 private:
@@ -31,6 +32,9 @@ private:
     float dt;
     EntityManager entityManager;
     Text interactMessage;
+    bool dialogOpen;
+    Text dialogBox;
+    std::string dialogText;
     
 };
 

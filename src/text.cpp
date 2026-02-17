@@ -1,42 +1,39 @@
 #include "text.h"
 
+
 Text::Text(){
-    container =  { 25.0f, 25.0f, GetScreenWidth() - 50.0f, GetScreenHeight() - 250.0f };
+    container =  { 25.0f, GetScreenHeight() - 60.0f, GetScreenWidth() - 50.0f, GetScreenHeight() - 400.0f };
     font = GetFontDefault();
-    wordWrap = false;
+    
 }
 
 Text::~Text(){
 
 }
 
-void Text::Draw()
-{
-    DrawRectangleLinesEx(container, 3, GREEN);
-    DrawTextBoxed(font, text, (Rectangle){ container.x + 4, container.y + 4, container.width - 4, container.height - 4 }, 20.0f, 2.0f, wordWrap, GRAY);
 
-}
-
-void Text::DrawTextBoxed(Font font, std::string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint){
-    DrawTextBoxedSelectable(font, text, rec, fontSize, spacing, wordWrap, tint, 0,0,WHITE,WHITE);
-}
-
-void Text::DrawTextBoxedSelectable(Font font, std::string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, int selectStart, int selectLength, Color selectTint, Color selectBackTint)
-{
+void Text::DrawTextBoxed(const std::string& text, Rectangle rec, float fontSize, Color tint){
+    //TraceLog(LOG_INFO, "DrawTextBoxed called! text='%s' rec.x=%f rec.y=%f", 
+        // text.c_str(), rec.x, rec.y);
+    //TraceLog(LOG_INFO, "DrawTextBoxedSelectable START: length=%d", text.length());
+    
      int length = text.length();
     int start = 0;
     float y = rec.y;
-
+    //TraceLog(LOG_INFO, "Before loop: length=%d start=%d", length, start);
     while (start < length){
-
+        //TraceLog(LOG_INFO, "INSIDE LOOP");
         int end = start;
         int lastSpace = -1;
 
         //find how many characters fit in this line
         while(end < length && text[end] != '\n'){
-            std::string singleChar(1, text[end]);
-            float lineWidth = MeasureText(singleChar.c_str(), fontSize);
+             //TraceLog(LOG_INFO, "Inner loop: end=%d char='%c'", end, text[end]);
+            std::string currentLine  = text.substr(start, end - start + 1);
+            float lineWidth = MeasureText(currentLine.c_str(), fontSize);
 
+
+            //TraceLog(LOG_INFO, "lineWidth=%f rec.width=%f", lineWidth, rec.width);
             if(lineWidth > rec.width){
                 //wrap at last space if we found one
                 if(lastSpace > start){
@@ -51,7 +48,7 @@ void Text::DrawTextBoxedSelectable(Font font, std::string text, Rectangle rec, f
 
         //draw line 
         std::string line = text.substr(start, end - start);
-
+        //TraceLog(LOG_INFO, "About to draw: '%s'", line.c_str());
         DrawText(line.c_str(), rec.x, y, fontSize, tint);
 
 
@@ -63,9 +60,25 @@ void Text::DrawTextBoxedSelectable(Font font, std::string text, Rectangle rec, f
     }
 }
 
+void Text::SetBoxRect(Rectangle rect)
+{
+    container = rect;
+}
+
+
 Rectangle Text::GetTextBoxRect()
 {
     return container;
 }
 
+void Text::SetPosition(float x, float y) {
+    container.x = x;
+    container.y = y;
+}
+
+void Text::SetBoxSize(float width, float height)
+{
+    container.width = width;
+    container.height = height;
+}
 

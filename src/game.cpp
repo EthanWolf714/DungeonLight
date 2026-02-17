@@ -6,6 +6,8 @@ Game::Game(int screenWidth, int screenHeight) : camera(screenWidth, screenHeight
 {
     //camera.setCameraTarget(GetPlayerPosition());
     dt = 0.0f;
+    dialogOpen = false;
+    dialogText = "";
     
 }
 
@@ -44,6 +46,22 @@ std::vector<Vector2> Game::GetTorchLocations()
     return positions;
 }
 
+void Game::HandleText()
+{
+    if(dialogOpen){
+        
+        //TraceLog(LOG_INFO, "Dialog opened!");
+        Rectangle rect = interactMessage.GetTextBoxRect();
+        //TraceLog(LOG_INFO, "Drawing dialog! Rect: x=%f y=%f w=%f h=%f", 
+                //rect.x, rect.y, rect.width, rect.height);
+        DrawRectangleRec(rect, BLACK); // Draw background
+        DrawRectangleLinesEx(rect, 2, WHITE); // Draw border
+        interactMessage.DrawTextBoxed(dialogText, interactMessage.GetTextBoxRect(), 20.0f, WHITE);
+            
+
+    }
+}
+
 void Game::Update()
 {
     dt = GetFrameTime();
@@ -60,6 +78,7 @@ void Game::Draw()
 
     BeginMode2D(camera.GetCamera());
     {
+        
         // TraceLog(LOG_INFO, "Drawing map");
         currentMap.Draw(0, 0, WHITE);
         
@@ -72,8 +91,10 @@ void Game::Draw()
             DrawRectangleLinesEx(object, 2, GREEN);     
         }
          //DrawCollisionDebug();
+        
     }
     EndMode2D();
+    
 }
 
 void Game::HandleInput()
@@ -103,7 +124,7 @@ void Game::HandleCollisions()
     //TraceLog(LOG_INFO, "Number of objects: %d", objects.size());
     Rectangle playerInteractCollision = entityManager.GetPlayerInteractRec();
     
-   bool dialogOpen = false;
+   //bool dialogOpen = false;
 
     for(const Rectangle &object : objects){ 
            
@@ -113,28 +134,17 @@ void Game::HandleCollisions()
            //TraceLog(LOG_INFO, "Interactable object collided");
             if(IsKeyPressed(KEY_E)){
                 dialogOpen = true;
-                TraceLog(LOG_INFO, "Dialog opened!");
+                dialogText = "LALALALALALALALALA";
 
-               //TraceLog(LOG_INFO, "Interacted with object");
-                break;
+              // TraceLog(LOG_INFO, "dialog open");
+            
             }
            
-        }else{
-             //TraceLog(LOG_INFO, "Interactable object not colliding");
         }
+        
     }
 
-    if(dialogOpen){
-
-        Rectangle rect = interactMessage.GetTextBoxRect();
-        DrawRectangleRec(rect, DARKGRAY); // Draw background
-        DrawRectangleLinesEx(rect, 2, WHITE); // Draw border
-        interactMessage.DrawTextBoxSelectable("LALALALLA", rect, 20.0f, RED);
-
-        if(IsKeyPressed(KEY_E)){
-            dialogOpen = false;
-        }
-    }
+    
 
 
     

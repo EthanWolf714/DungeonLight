@@ -60,7 +60,7 @@ int main()
             light.BeginLightMask(game.GetCamera(), game.GetPlayerPosition(), game.GetPlayerLightRadius(),torchPos);
             light.EndLightMask();
             light.RenderLightMask();
-            
+            game.HandleText();
             const char *fpsText = 0;
             if (currentFps <= 0) fpsText = TextFormat("FPS: unlimited (%i)", GetFPS());
             else fpsText = TextFormat("FPS: %i (target: %i)", GetFPS(), currentFps);
