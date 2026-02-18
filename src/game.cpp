@@ -94,10 +94,10 @@ void Game::Draw()
         entityManager.Draw();
         // DEBUG: Draw red circle at spawn point
         // DrawCircle(40, 40, 5, RED);
-        const std::vector<Rectangle> &objects = currentMap.GetInteractableObjects();
+        const std::vector<Map::Interactable> &objects = currentMap.GetInteractableObjects();
        
-        for(const Rectangle &object : objects){ 
-            DrawRectangleLinesEx(object, 2, GREEN);     
+        for(const Map::Interactable &object : objects){ 
+            DrawRectangleLinesEx(object.rect, 2, GREEN);     
         }
          //DrawCollisionDebug();
         
@@ -129,15 +129,15 @@ void Game::HandleCollisions()
         }
     }
 
-    const std::vector<Rectangle> &objects = currentMap.GetInteractableObjects();
+    const std::vector<Map::Interactable> &objects = currentMap.GetInteractableObjects();
     //TraceLog(LOG_INFO, "Number of objects: %d", objects.size());
     Rectangle playerInteractCollision = entityManager.GetPlayerInteractRec();
     
    //bool dialogOpen = false;
 
-    for(const Rectangle &object : objects){ 
+    for(const Map::Interactable &object : objects){ 
            
-        bool collided = CheckCollisionRecs(playerInteractCollision, object);
+        bool collided = CheckCollisionRecs(playerInteractCollision, object.rect);
 
         if(collided){
             if(coolDown > 0.0f) coolDown -= dt;
@@ -147,7 +147,10 @@ void Game::HandleCollisions()
                 dialogText = "LALALALALALALALALA";
                 coolDown = 3.0f;
               // TraceLog(LOG_INFO, "dialog open");
-            
+                if(object.name == "Item"){
+                    dialogText = "Item Found";
+                    //set sprites to types or items
+                }
             }
 
             

@@ -4,7 +4,7 @@
 enum Type {
     WEAPON,
     WRITING,
-    ITEM
+    Artifact
 };
 class Relic{
     private:
@@ -20,7 +20,7 @@ class Relic{
         ~Relic();
         void Draw();
         Vector2 GetPosition();
-        void SetSprite(Texture2D sprite);
+        void LoadSprite();
         bool CheckCollisions(Vector2 playerPos);
 
 };

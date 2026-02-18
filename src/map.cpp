@@ -88,7 +88,7 @@ bool Map::Load(const char *filepath)
                         TraceLog(LOG_INFO, "Loaded %d torches", torchPositions.size());
                     }
                     else if(isInteractablesLayer){
-                        interactableCollisions.push_back({(float)object.x, (float)object.y, (float)object.width,(float)object.height});
+                        interactableCollisions.push_back((Interactable){(float)object.x, (float)object.y, (float)object.width, (float)object.height, object.name});
 
                         TraceLog(LOG_INFO, "Loaded %d interactable objects", interactableCollisions.size());
                     }
@@ -139,7 +139,7 @@ const std::vector<Vector2>& Map::GetTorchPositions() const
     return torchPositions;
 }
 
-const std:: vector<Rectangle>& Map::GetInteractableObjects() const
+const std::vector<Map::Interactable>& Map::GetInteractableObjects() const
 {
     return interactableCollisions;
 }
