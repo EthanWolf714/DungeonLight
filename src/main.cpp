@@ -46,25 +46,34 @@ int main()
         //----------------------------------------------------------------------------------
         // TODO: Update your variables here
         //----------------------------------------------------------------------------------
-        game.Update();
+        if(!game.IsGameOver()){
+            game.Update();
+        }
+        
        
         // Draw
         //----------------------------------------------------------------------------------
         BeginDrawing();
             ClearBackground(DARKGREEN);
-            
-            game.Draw();
+            if(!game.IsGameOver()){
+                game.Draw();
            
-            auto torchPos = game.GetTorchLocations();
-            
-            light.BeginLightMask(game.GetCamera(), game.GetPlayerPosition(), game.GetPlayerLightRadius(),torchPos);
-            light.EndLightMask();
-            light.RenderLightMask();
-            game.HandleText();
-            const char *fpsText = 0;
-            if (currentFps <= 0) fpsText = TextFormat("FPS: unlimited (%i)", GetFPS());
-            else fpsText = TextFormat("FPS: %i (target: %i)", GetFPS(), currentFps);
+                auto torchPos = game.GetTorchLocations();
+                
+                light.BeginLightMask(game.GetCamera(), game.GetPlayerPosition(), game.GetPlayerLightRadius(),torchPos);
+                light.EndLightMask();
+                light.RenderLightMask();
+                game.HandleText();
+                const char *fpsText = 0;
+                if (currentFps <= 0) fpsText = TextFormat("FPS: unlimited (%i)", GetFPS());
+                else fpsText = TextFormat("FPS: %i (target: %i)", GetFPS(), currentFps);
             DrawText(fpsText, 10, 10, 20, WHITE);
+            }else{
+                // Draw game over screen
+                DrawText("GAME OVER", 280, 130, 40, RED);
+                DrawText("Press ESC to exit or Enter to Restart", 190, 200, 20, WHITE);
+            }
+            
         EndDrawing();
         //----------------------------------------------------------------------------------
     }

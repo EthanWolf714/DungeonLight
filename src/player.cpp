@@ -10,6 +10,7 @@ Player::Player(){
     playerSprite = &player_down; //start facing down
     position = {0,0};
     scale = 1.0f;
+    isActive = true;
     frameRec = {0.0f,0.0f,frame_width, frame_height}; 
     collisionRec = {position.x + 4.0f, position.y + 8.0f, 8, 8};
     interactRec = {position.x - 4.0f, position.y - 4.0f, 24, 24};
@@ -17,7 +18,7 @@ Player::Player(){
     direction = Direction::Down;
     facingLeft = false;
     speed = 90.f;
-    lightLevel = 1.0;
+    lightLevel = .5;
     drainRate = 1.0f / 120.0f;
 
    
@@ -184,6 +185,20 @@ Rectangle Player::GetInteractRec()
 {
     return interactRec;
 }
+
+bool Player::IsActive()
+{
+    if(lightLevel == 0.0f){
+        isActive = false;
+    }
+    return isActive;
+}
+
+
+
+
+
+
 
 
 

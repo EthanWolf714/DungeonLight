@@ -16,6 +16,7 @@ class EntityManager{
         void Draw();
         std::vector<Torch> GetTorches();
         Vector2 GetPlayerPos();
+        bool GetPlayerActivity();
         void GetPlayerInput();
         void SetPlayerPos(Vector2 pos);
         void SpawnTorch(Vector2 pos, float restoreAmount);
@@ -25,6 +26,7 @@ class EntityManager{
         Rectangle GetPlayerInteractRec();
         float GetPlayerLightRadius();
         void UpdatePlayerRects();
+        
 
 
 

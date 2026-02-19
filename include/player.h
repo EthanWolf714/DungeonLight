@@ -27,8 +27,10 @@ class Player{
         void RestoreAmount(float amount);
         Rectangle GetCollisionRec();
         Rectangle GetInteractRec();
+        bool IsActive();
     private:
         Direction direction;
+        bool isActive;
         Vector2 position;
         Vector2 previousPosition;
         float speed;
@@ -50,6 +52,7 @@ class Player{
         float scale;
         float lightLevel;
         float drainRate;
+       
         
         
 

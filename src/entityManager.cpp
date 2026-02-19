@@ -38,6 +38,11 @@ Vector2 EntityManager::GetPlayerPos()
     return player.GetPosition();
 }
 
+bool EntityManager::GetPlayerActivity()
+{
+    return player.IsActive();
+}
+
 void EntityManager::GetPlayerInput()
 {
     player.Move();
@@ -82,3 +87,4 @@ void EntityManager::UpdatePlayerRects()
 {
     player.UpdatePlayerRecs();
 }
+

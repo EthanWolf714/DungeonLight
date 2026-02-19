@@ -14,6 +14,7 @@ public:
     ~Game();
     void Draw();
     void Update();
+    bool IsGameOver();
     void HandleInput();
     Vector2 GetPlayerPosition();
     void HandleCollisions();
@@ -24,6 +25,8 @@ public:
     bool LoadMap(const char* filepath);
     std::vector<Vector2> GetTorchLocations();
     void HandleText();
+    
+    
    // void RenderLight(Light light);
 
 private:
@@ -36,7 +39,9 @@ private:
     Text dialogBox;
     std::string dialogText;
     float coolDown;
-    int artifacts;
+    int relics;
+    int relicCount;
+    bool isGameOver;
     
 };
 

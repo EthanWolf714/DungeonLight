@@ -143,3 +143,16 @@ const std::vector<Map::Interactable>& Map::GetInteractableObjects() const
 {
     return interactableCollisions;
 }
+
+int Map::GetRelicCount()
+{
+    int count = 0;
+    for(const Interactable &obj : interactableCollisions){
+        if(obj.name == "Item"){
+            count++;
+        }
+    }
+    return count;
+}
+
+

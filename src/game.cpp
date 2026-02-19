@@ -9,7 +9,9 @@ Game::Game(int screenWidth, int screenHeight) : camera(screenWidth, screenHeight
     dialogOpen = false;
     dialogText = "";
     coolDown = 0.0f;
-    artifacts = 0;
+    
+    
+    isGameOver = false;
     
 }
 
@@ -33,7 +35,9 @@ bool Game::LoadMap(const char *filepath)
     // set player position to spawn point
     entityManager.SetPlayerPos(currentMap.GetSpawnPosition());
     camera.setCameraTarget(currentMap.GetSpawnPosition());
-    
+    relics = currentMap.GetRelicCount();
+    relicCount = 0;
+    TraceLog(LOG_INFO, "relics: %d, relicCount: %d", relics, relicCount);
     return true;
 }
 
@@ -63,11 +67,30 @@ void Game::HandleText()
 
     }
 
+     
+
     if(coolDown > 0.0f){
-        TraceLog(LOG_INFO, "Countdown started: %.1f", coolDown);
+        coolDown -= dt;
+        //TraceLog(LOG_INFO, "Countdown started: %.1f", coolDown);
+        
     }else{
         dialogOpen = false;
     }
+}
+
+bool Game::IsGameOver()
+{
+    if(!entityManager.GetPlayerActivity()){
+         TraceLog(LOG_INFO, "Game over: player inactive");
+        return true;
+    }
+
+    if(relicCount == relics && relics > 0){
+        TraceLog(LOG_INFO, "Game over: relics collected");
+        return true;
+    }
+            
+    return false;
 }
 
 
@@ -81,6 +104,8 @@ void Game::Update()
     // update camera position to target player
     camera.setCameraTarget(entityManager.GetPlayerPos());
 }
+
+
 
 void Game::Draw()
 {
@@ -138,9 +163,9 @@ void Game::HandleCollisions()
     for(const Map::Interactable &object : objects){ 
            
         bool collided = CheckCollisionRecs(playerInteractCollision, object.rect);
-
+        
         if(collided){
-            if(coolDown > 0.0f) coolDown -= dt;
+            
            //TraceLog(LOG_INFO, "Interactable object collided");
             if(IsKeyPressed(KEY_E) && coolDown <= 0.0f){
                 dialogOpen = true;
@@ -149,6 +174,10 @@ void Game::HandleCollisions()
               // TraceLog(LOG_INFO, "dialog open");
                 if(object.name == "Item"){
                     dialogText = "Item Found";
+
+                    relicCount++;
+                    TraceLog(LOG_INFO, "Relics Collected: %d", relicCount);
+                    
                     //set sprites to types or items
                 }
             }
