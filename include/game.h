@@ -6,6 +6,7 @@
 #include "light.h"
 #include "entityManager.h"
 #include "text.h"
+#include "relic.h"
 
 class Game
 {
@@ -22,12 +23,11 @@ public:
     Camera2D GetCamera();
     void DrawCollisionDebug();
     float GetPlayerLightRadius();
-    bool LoadMap(const char* filepath);
+    bool LoadMap(const char *filepath);
     std::vector<Vector2> GetTorchLocations();
     void HandleText();
-    
-    
-   // void RenderLight(Light light);
+
+    // void RenderLight(Light light);
 
 private:
     Map currentMap;
@@ -42,7 +42,6 @@ private:
     int relics;
     int relicCount;
     bool isGameOver;
-    
 };
 
 #endif

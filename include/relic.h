@@ -1,27 +1,35 @@
 #ifndef __RELIC_H__
 #define __RELIC_H__
 #include "raylib.h"
+#include <raymath.h>
 enum Type {
     WEAPON,
-    WRITING,
-    Artifact
+    ITEM,
+    WRITING
 };
 class Relic{
     private:
         enum Type type;
         Vector2 position;
-        Texture2D itemSprite;
-        Texture2D weaponSprite;
-        Texture2D writingSprite;
+        static Texture2D weaponTexture;
+        static Texture2D itemTexture;
+        static Texture2D writingTexture;
+        bool isCollected;
 
 
     public:
-        Relic();
+        Relic(Vector2 pos, Type type);
         ~Relic();
         void Draw();
+        static void LoadSharedTextures();
+        static void UnloadSharedTextures();
         Vector2 GetPosition();
-        void LoadSprite();
-        bool CheckCollisions(Vector2 playerPos);
+        void Collect();
+        bool IsCollected();
+        bool CheckCollision(Vector2 playerPos, float radius);
+        
+        
+
 
 };
 #endif // __RELIC_H__

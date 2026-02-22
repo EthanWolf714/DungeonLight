@@ -1,36 +1,63 @@
 #include "entityManager.h"
 
-EntityManager::EntityManager(){
+EntityManager::EntityManager()
+{
     Torch::LoadSharedTexture();
 }
 
-EntityManager::~EntityManager(){
+EntityManager::~EntityManager()
+{
     Torch::UnloadSharedTexture();
 }
 
-void EntityManager::Update(float dt){
+void EntityManager::Update(float dt)
+{
     player.Update(dt);
-    for(Torch& torch : torches){
-        if(torch.CheckCollisions(player.GetPosition(), 16.0f)){
+    for (Torch &torch : torches)
+    {
+        if (torch.CheckCollisions(player.GetPosition(), 16.0f))
+        {
             player.RestoreAmount(torch.GetRestoreAmount());
         }
-        
-
     }
+    for (Relic &relic : relics)
+    {
+        if (!relic.IsCollected() && relic.CheckCollision(player.GetPosition(), 16.0f))
+        {
+            relic.Collect();
+        }
+}
 }
 
-void EntityManager::Draw(){
-     for(Torch& torch : torches){
-            if(!torch.IsConsumed()){
-                torch.Draw();
-            }
+void EntityManager::Draw()
+{
+    for (Torch &torch : torches)
+    {
+        if (!torch.IsConsumed())
+        {
+            torch.Draw();
+        }
     }
+
+    for (Relic &relic : relics)
+    {
+        if (!relic.IsCollected())
+        {
+            relic.Draw();
+        }
+    }
+
     player.Draw();
 }
 
 std::vector<Torch> EntityManager::GetTorches()
 {
     return torches;
+}
+
+std::vector<Relic> EntityManager::GetRelics()
+{
+    return relics;
 }
 
 Vector2 EntityManager::GetPlayerPos()
@@ -46,7 +73,6 @@ bool EntityManager::GetPlayerActivity()
 void EntityManager::GetPlayerInput()
 {
     player.Move();
-    
 }
 
 void EntityManager::SetPlayerPos(Vector2 pos)
@@ -59,7 +85,14 @@ void EntityManager::SpawnTorch(Vector2 pos, float restoreAmount)
     torches.emplace_back(pos, restoreAmount);
 }
 
-void EntityManager::UndoPlayerMovement(){
+void EntityManager::SpawnRelic(Vector2 pos, Type type)
+{
+    relics.emplace_back(pos, type);
+}
+
+
+void EntityManager::UndoPlayerMovement()
+{
     player.UndoMovement();
 }
 
@@ -88,3 +121,7 @@ void EntityManager::UpdatePlayerRects()
     player.UpdatePlayerRecs();
 }
 
+void EntityManager::ReserveRelics(int count)
+{
+    relics.reserve(count);
+}
