@@ -64,6 +64,9 @@ void Player::Update(float dt){
         lightLevel = 0.0f;
         //player is dead
     }
+    if(lightLevel < 0.5f){
+        speed -= 2.0f * dt;
+    }
 
    Animate();
 
