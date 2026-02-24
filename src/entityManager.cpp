@@ -20,13 +20,7 @@ void EntityManager::Update(float dt)
             player.RestoreAmount(torch.GetRestoreAmount());
         }
     }
-    for (Relic &relic : relics)
-    {
-        if (!relic.IsCollected() && relic.CheckCollision(player.GetPosition(), 16.0f))
-        {
-            relic.Collect();
-        }
-}
+
 }
 
 void EntityManager::Draw()
@@ -39,13 +33,6 @@ void EntityManager::Draw()
         }
     }
 
-    for (Relic &relic : relics)
-    {
-        if (!relic.IsCollected())
-        {
-            relic.Draw();
-        }
-    }
 
     player.Draw();
 }
@@ -55,10 +42,6 @@ std::vector<Torch> EntityManager::GetTorches()
     return torches;
 }
 
-std::vector<Relic> EntityManager::GetRelics()
-{
-    return relics;
-}
 
 Vector2 EntityManager::GetPlayerPos()
 {
@@ -83,11 +66,6 @@ void EntityManager::SetPlayerPos(Vector2 pos)
 void EntityManager::SpawnTorch(Vector2 pos, float restoreAmount)
 {
     torches.emplace_back(pos, restoreAmount);
-}
-
-void EntityManager::SpawnRelic(Vector2 pos, Type type)
-{
-    relics.emplace_back(pos, type);
 }
 
 
@@ -119,9 +97,4 @@ float EntityManager::GetPlayerLightRadius()
 void EntityManager::UpdatePlayerRects()
 {
     player.UpdatePlayerRecs();
-}
-
-void EntityManager::ReserveRelics(int count)
-{
-    relics.reserve(count);
 }

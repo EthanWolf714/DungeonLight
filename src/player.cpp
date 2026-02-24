@@ -18,8 +18,8 @@ Player::Player(){
     direction = Direction::Down;
     facingLeft = false;
     speed = 90.f;
-    lightLevel = .5;
-    drainRate = 1.0f / 120.0f;
+    lightLevel = 1.0;
+    drainRate = 1.0 / 120.0f;
 
    
 

@@ -32,25 +32,12 @@ bool Game::LoadMap(const char *filepath)
         entityManager.SpawnTorch(pos, 0.3);
     }
 
-    entityManager.ReserveRelics(currentMap.GetInteractableObjects().size());
-
-    // spawn relics from interactable objects
-    for (const Map::Interactable &object : currentMap.GetInteractableObjects())
-    {
-        if (object.name == "Item")
-            entityManager.SpawnRelic({object.rect.x, object.rect.y}, Type::ITEM);
-        else if (object.name == "Weapon")
-            entityManager.SpawnRelic({object.rect.x, object.rect.y}, Type::WEAPON);
-        else if (object.name == "Writing")
-            entityManager.SpawnRelic({object.rect.x, object.rect.y}, Type::WRITING);
-    }
+   
+    
 
     // set player position to spawn point
     entityManager.SetPlayerPos(currentMap.GetSpawnPosition());
     camera.setCameraTarget(currentMap.GetSpawnPosition());
-    relics = currentMap.GetRelicCount();
-    relicCount = 0;
-    TraceLog(LOG_INFO, "relics: %d, relicCount: %d", relics, relicCount);
     return true;
 }
 
@@ -98,11 +85,6 @@ bool Game::IsGameOver()
         return true;
     }
 
-    int totalRelics = entityManager.GetRelics().size();
-    if(relicCount == totalRelics && relics > 0){
-        TraceLog(LOG_INFO, "Game over: relics collected");
-        return true;
-    }
             
     return false;
 }
@@ -114,23 +96,9 @@ void Game::Update()
     HandleInput();
     HandleCollisions();
     entityManager.Update(dt);
-    int newCount = 0;
-    for (Relic &relic : entityManager.GetRelics())
-    {   
-        if (relic.IsCollected()){
-            newCount ++;
-            
-            
-        }
-        //only trigger when count increases
-        if(newCount > relicCount){
-            dialogOpen = true;
-            dialogText = "Relic Found";
-            coolDown = 3.0f;
-        }
-    }
+    
 
-    relicCount = newCount;
+
     //TraceLog(LOG_INFO, "Torch count: %d", torches.size());
     // update camera position to target player
     camera.setCameraTarget(entityManager.GetPlayerPos());

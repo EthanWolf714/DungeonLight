@@ -6,7 +6,7 @@
 #include "light.h"
 #include "entityManager.h"
 #include "text.h"
-#include "relic.h"
+
 
 class Game
 {
@@ -39,8 +39,6 @@ private:
     Text dialogBox;
     std::string dialogText;
     float coolDown;
-    int relics;
-    int relicCount;
     bool isGameOver;
 };
 
