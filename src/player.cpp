@@ -18,7 +18,7 @@ Player::Player(){
     direction = Direction::Down;
     facingLeft = false;
     speed = 90.f;
-    lightLevel = 1.0;
+    lightLevel = 1.5;
     drainRate = 1.0 / 120.0f;
 
    
@@ -176,7 +176,7 @@ void Player::UndoMovement(){
 void Player::RestoreAmount(float amount)
 {
     lightLevel += amount;
-    if(lightLevel > 1.0f) lightLevel = 1.0f;
+    if(lightLevel > 1.5f) lightLevel = 1.5f;
 }
 
 Rectangle Player::GetCollisionRec()
