@@ -174,6 +174,12 @@ void Game::HandleCollisions()
                 
             }
 
+            if(IsKeyPressed(KEY_E) && coolDown <= 0.0f && object.name == "door"){
+                dialogOpen = true;
+                dialogText = "Door unlocked";
+                //if door is locked
+                //change messagee
+            }
             
             
            

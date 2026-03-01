@@ -16,7 +16,6 @@ class Torch{
     public:
      Torch(Vector2 pos, float amount = 0.3f);
      ~Torch();
-     void Update();
      bool CheckCollisions(Vector2 playerPos, float radius);
      bool IsConsumed();
      Vector2 GetPosition();

@@ -37,7 +37,7 @@ public:
     const std::vector<Rectangle> &GetCollisionBoxes() const;
     const std::vector<Vector2> &GetTorchPositions() const;
     const std::vector<Interactable> &GetInteractableObjects() const;
-    int GetRelicCount();
+   
 };
 
 #endif

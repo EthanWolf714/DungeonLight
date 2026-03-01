@@ -90,7 +90,7 @@ bool Map::Load(const char *filepath)
                     else if(isInteractablesLayer){
                         interactableCollisions.push_back((Interactable){(float)object.x, (float)object.y, (float)object.width, (float)object.height, object.name});
 
-                        TraceLog(LOG_INFO, "Loaded %d interactable objects", interactableCollisions.size());
+                        TraceLog(LOG_INFO, "Loaded %d interactable objects and doors", interactableCollisions.size());
                     }
                     else if (isWallsLayer)
                     {
@@ -143,16 +143,4 @@ const std::vector<Map::Interactable>& Map::GetInteractableObjects() const
 {
     return interactableCollisions;
 }
-
-int Map::GetRelicCount()
-{
-    int count = 0;
-    for(const Interactable &obj : interactableCollisions){
-        if(obj.name == "Item"){
-            count++;
-        }
-    }
-    return count;
-}
-
 
