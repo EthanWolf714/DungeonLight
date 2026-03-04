@@ -20,6 +20,7 @@ Player::Player(){
     speed = 90.f;
     lightLevel = 1.5;
     drainRate = 1.0 / 120.0f;
+    keyCount = 0;
 
    
 
