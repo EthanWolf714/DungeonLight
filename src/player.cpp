@@ -179,6 +179,16 @@ void Player::RestoreAmount(float amount)
     if(lightLevel > 1.5f) lightLevel = 1.5f;
 }
 
+void Player::CollectKey()
+{
+    keyCount++;
+}
+
+int Player::GetKeys()
+{
+    return keyCount;
+}
+
 Rectangle Player::GetCollisionRec()
 {
     return collisionRec;

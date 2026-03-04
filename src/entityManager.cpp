@@ -3,11 +3,13 @@
 EntityManager::EntityManager()
 {
     Torch::LoadSharedTexture();
+    Key::LoadSharedTexture();
 }
 
 EntityManager::~EntityManager()
 {
     Torch::UnloadSharedTexture();
+    Key::UnloadSharedTexture();
 }
 
 void EntityManager::Update(float dt)
@@ -18,6 +20,11 @@ void EntityManager::Update(float dt)
         if (torch.CheckCollisions(player.GetPosition(), 16.0f))
         {
             player.RestoreAmount(torch.GetRestoreAmount());
+        }
+    }
+    for(Key &key : keys){
+        if(key.CheckCollisions(player.GetPosition(), 16.0f)){
+            player.CollectKey();
         }
     }
 
@@ -32,6 +39,11 @@ void EntityManager::Draw()
             torch.Draw();
         }
     }
+    for(Key &key : keys){
+        if(!key.IsCollected()){
+            key.Draw();
+        }
+    }
 
 
     player.Draw();
@@ -40,6 +52,9 @@ void EntityManager::Draw()
 std::vector<Torch> EntityManager::GetTorches()
 {
     return torches;
+}
+std::vector<Key> EntityManager::GetKeys(){
+    return keys;
 }
 
 
@@ -94,7 +109,17 @@ float EntityManager::GetPlayerLightRadius()
     return player.GetLightRadius();
 }
 
+int EntityManager::GetPlayerKeyCount()
+{
+    return player.GetKeys();
+}
+
 void EntityManager::UpdatePlayerRects()
 {
     player.UpdatePlayerRecs();
+}
+
+void EntityManager::SpawnKey(Vector2 pos)
+{
+    keys.emplace_back(pos);
 }

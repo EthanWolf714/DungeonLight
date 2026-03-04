@@ -4,6 +4,7 @@
 #include "camera.h"
 #include "map.h"
 #include "light.h"
+#include "door.h"
 #include "entityManager.h"
 #include "text.h"
 
@@ -25,6 +26,7 @@ public:
     float GetPlayerLightRadius();
     bool LoadMap(const char *filepath);
     std::vector<Vector2> GetTorchLocations();
+    std::vector<Vector2> GetKeyLocations();
     void HandleText();
 
     // void RenderLight(Light light);

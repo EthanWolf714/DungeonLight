@@ -2,12 +2,14 @@
 #define ENTITY_MANAGER_H
 #include "player.h"
 #include "torch.h"
+#include "key.h"
 #include "vector"
 class EntityManager
 {
 private:
     Player player;
     std::vector<Torch> torches;
+    std::vector<Key> keys;
     Vector2 playerPos;
 
 public:
@@ -26,7 +28,10 @@ public:
     Rectangle GetPlayerCollisionRec();
     Rectangle GetPlayerInteractRec();
     float GetPlayerLightRadius();
+    int GetPlayerKeyCount();
     void UpdatePlayerRects();
+    void SpawnKey(Vector2 pos);
+    std::vector<Key> GetKeys();
    
    
   

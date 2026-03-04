@@ -166,7 +166,7 @@ void Game::HandleCollisions()
         if(collided){
             
            //TraceLog(LOG_INFO, "Interactable object collided");
-            if(IsKeyPressed(KEY_E) && coolDown <= 0.0f){
+            if(IsKeyPressed(KEY_E) && coolDown <= 0.0f && object.name == "interactable"){
                 dialogOpen = true;
                 dialogText = "LALALALALALALALALA";
                 coolDown = 3.0f;
@@ -177,6 +177,12 @@ void Game::HandleCollisions()
             if(IsKeyPressed(KEY_E) && coolDown <= 0.0f && object.name == "door"){
                 dialogOpen = true;
                 dialogText = "Door unlocked";
+                coolDown = 2.0f;
+                if(entityManager.GetPlayerKeyCount() <= 0){
+                    dialogOpen = true;
+                    dialogText = "This door is locked, maybe there is a key.";
+                    coolDown = 2.0f;
+                }
                 //if door is locked
                 //change messagee
             }

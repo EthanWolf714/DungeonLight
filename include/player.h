@@ -25,6 +25,8 @@ class Player{
         float GetLightLevel() const {return lightLevel;}
         float GetLightRadius() const {return 50.0f * lightLevel;}
         void RestoreAmount(float amount);
+        void CollectKey();
+        int GetKeys();
         Rectangle GetCollisionRec();
         Rectangle GetInteractRec();
         bool IsActive();
@@ -52,6 +54,7 @@ class Player{
         float scale;
         float lightLevel;
         float drainRate;
+        int keyCount;
        
         
         

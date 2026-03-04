@@ -1,5 +1,5 @@
 #include "key.h"
-
+Texture2D Key::keySprite = {0};
 Key::Key(Vector2 pos){
     position = pos;
     collected = false;
@@ -10,12 +10,12 @@ Key::~Key(){
 }
 
 void Key::Draw(){
-
+    DrawTexture(keySprite, position.x,position.y, WHITE);
 }
 
 void Key::LoadSharedTexture()
 {
-    //key sprite
+    keySprite = LoadTexture("build/assets/key.png");
 }
 
 void Key::UnloadSharedTexture()
