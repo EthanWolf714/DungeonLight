@@ -15,8 +15,10 @@ EntityManager::~EntityManager()
 void EntityManager::Update(float dt)
 {
     player.Update(dt);
+    
     for (Torch &torch : torches)
     {
+        torch.Update(dt);
         if (torch.CheckCollisions(player.GetPosition(), 16.0f))
         {
             player.RestoreAmount(torch.GetRestoreAmount());

@@ -6,6 +6,10 @@ Torch::Torch(Vector2 pos, float amount)
     position = pos;
     consumed = false;
     restoreAmount = amount;
+    frameRec = {0.0f,0.0f,frame_width, frame_height}; 
+    runningTime = 0.0f;
+    frame = 1;
+   
     
 }
 
@@ -14,8 +18,13 @@ Torch::~Torch()
    
 }
 
+void Torch::Update(float dt)
+{
+    Animate();
+}
+
 void Torch::Draw(){
-    DrawTexture(torchSprite, position.x,position.y, WHITE);
+    DrawTextureRec(torchSprite, frameRec,position, WHITE);
 }
 
 float Torch::GetRestoreAmount()
@@ -25,12 +34,28 @@ float Torch::GetRestoreAmount()
 
 void Torch::LoadSharedTexture()
 {
-    torchSprite = LoadTexture("build/assets/Torch.png");
+    torchSprite = LoadTexture("build/assets/torch_spriteSheet.png");
 }
 
 void Torch::UnloadSharedTexture()
 {
      UnloadTexture(torchSprite);
+}
+
+void Torch::Animate()
+{
+    
+    //add animation time to delta
+    runningTime += GetFrameTime();
+
+    if (runningTime >= updateTime){
+        //move frame
+        frame = (frame % 6) + 1;
+        //update frame rectangle
+        frameRec.x = frame * frame_width;
+        //reset animation time
+        runningTime = 0.0f;
+    }
 }
 
 
