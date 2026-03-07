@@ -31,6 +31,10 @@ bool Game::LoadMap(const char *filepath)
     for(Vector2 pos: currentMap.GetTorchPositions()){
         entityManager.SpawnTorch(pos, 0.3);
     }
+  
+    for(Vector2 pos: currentMap.GetKeyPositions()){
+        entityManager.SpawnKey(pos);
+    }
 
    
     
@@ -47,6 +51,17 @@ std::vector<Vector2> Game::GetTorchLocations()
     for(Torch& torch : entityManager.GetTorches()){
         if(!torch.IsConsumed()){
             positions.push_back(torch.GetPosition());
+        }
+    }
+    return positions;
+}
+
+std::vector<Vector2> Game::GetKeyLocations()
+{
+    std::vector<Vector2> positions;
+    for(Key&key : entityManager.GetKeys()){
+        if(!key.IsCollected()){
+            positions.push_back(key.GetPosition());
         }
     }
     return positions;

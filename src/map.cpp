@@ -86,6 +86,9 @@ bool Map::Load(const char *filepath)
                         torchPositions.push_back({(float)object.x, (float)object.y});
                 
                         TraceLog(LOG_INFO, "Loaded %d torches", torchPositions.size());
+                    }else if(strcmp(object.name, "key") == 0){
+                        keyPositions.push_back({(float)object.x, (float)object.y});
+                        TraceLog(LOG_INFO, "Loaded %d keys", keyPositions.size());
                     }
                     else if(isInteractablesLayer){
                         interactableCollisions.push_back((Interactable){(float)object.x, (float)object.y, (float)object.width, (float)object.height, object.name});
@@ -137,6 +140,11 @@ const std::vector<Rectangle> &Map::GetCollisionBoxes() const
 const std::vector<Vector2>& Map::GetTorchPositions() const
 {
     return torchPositions;
+}
+
+const std::vector<Vector2>& Map::GetKeyPositions() const
+{
+    return keyPositions;
 }
 
 const std::vector<Map::Interactable>& Map::GetInteractableObjects() const

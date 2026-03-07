@@ -6,6 +6,8 @@
 class Door{
     private:
         bool unlocked;
+        Texture2D doorLockedSprite;
+        Texture2D doorUnlockedSprite;
         Texture2D doorSprite;
     public:
         Door();

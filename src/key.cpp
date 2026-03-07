@@ -11,6 +11,7 @@ Key::~Key(){
 
 void Key::Draw(){
     DrawTexture(keySprite, position.x,position.y, WHITE);
+    
 }
 
 void Key::LoadSharedTexture()

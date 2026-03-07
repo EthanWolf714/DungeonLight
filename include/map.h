@@ -21,6 +21,7 @@ private:
     int objectLayerIndex;
     std::vector<Rectangle> collisionBoxes;
     std::vector<Vector2> torchPositions;
+    std::vector<Vector2> keyPositions;
     std::vector<Interactable> interactableCollisions;
     
     
@@ -36,6 +37,7 @@ public:
     const TmxLayer *GetLayer(int index) const;
     const std::vector<Rectangle> &GetCollisionBoxes() const;
     const std::vector<Vector2> &GetTorchPositions() const;
+     const std::vector<Vector2> &GetKeyPositions() const;
     const std::vector<Interactable> &GetInteractableObjects() const;
    
 };
