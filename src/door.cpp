@@ -40,5 +40,5 @@ void Door::unlockDoor()
 
 void Door::SetPosition(Vector2 pos)
 {
-    pos = position;
+    position = pos;
 }
