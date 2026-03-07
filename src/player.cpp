@@ -185,6 +185,11 @@ void Player::CollectKey()
     keyCount++;
 }
 
+void Player::UseKey()
+{
+    keyCount--;
+}
+
 int Player::GetKeys()
 {
     return keyCount;

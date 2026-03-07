@@ -28,12 +28,14 @@ public:
     std::vector<Vector2> GetTorchLocations();
     std::vector<Vector2> GetKeyLocations();
     void HandleText();
+    bool GetDoorStatus();
 
     // void RenderLight(Light light);
 
 private:
     Map currentMap;
     GameCamera camera;
+    Door door;
     float dt;
     EntityManager entityManager;
     Text interactMessage;

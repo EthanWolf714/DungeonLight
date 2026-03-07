@@ -26,6 +26,7 @@ class Player{
         float GetLightRadius() const {return 50.0f * lightLevel;}
         void RestoreAmount(float amount);
         void CollectKey();
+        void UseKey();
         int GetKeys();
         Rectangle GetCollisionRec();
         Rectangle GetInteractRec();

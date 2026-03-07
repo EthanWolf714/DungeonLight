@@ -59,6 +59,11 @@ std::vector<Key> EntityManager::GetKeys(){
     return keys;
 }
 
+void EntityManager::UseKey()
+{
+    player.UseKey();
+}
+
 
 Vector2 EntityManager::GetPlayerPos()
 {
@@ -125,3 +130,4 @@ void EntityManager::SpawnKey(Vector2 pos)
 {
     keys.emplace_back(pos);
 }
+

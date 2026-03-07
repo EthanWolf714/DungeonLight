@@ -35,6 +35,13 @@ bool Game::LoadMap(const char *filepath)
     for(Vector2 pos: currentMap.GetKeyPositions()){
         entityManager.SpawnKey(pos);
     }
+    const std::vector<Map::Interactable> &objects = currentMap.GetInteractableObjects();
+    for(const Map::Interactable &object : objects){
+        if(object.name == "door"){
+            door.SetPosition({object.rect.x, object.rect.y});
+            break;
+        }
+    }
 
    
     
@@ -93,6 +100,11 @@ void Game::HandleText()
     }
 }
 
+bool Game::GetDoorStatus()
+{
+    return door.isUnlocked();
+}
+
 bool Game::IsGameOver()
 {
     if(!entityManager.GetPlayerActivity()){
@@ -130,6 +142,7 @@ void Game::Draw()
         // TraceLog(LOG_INFO, "Drawing map");
         currentMap.Draw(0, 0, WHITE);
         
+        door.Draw();
         entityManager.Draw();
         // DEBUG: Draw red circle at spawn point
         // DrawCircle(40, 40, 5, RED);
@@ -155,6 +168,8 @@ void Game::HandleCollisions()
     // get wall collisions objects
     const std::vector<Rectangle> &walls = currentMap.GetCollisionBoxes();
     Rectangle playerRec = entityManager.GetPlayerCollisionRec();
+
+    
     // loop through wall collisions
     for (const Rectangle &wall : walls)
     {
@@ -168,9 +183,21 @@ void Game::HandleCollisions()
         }
     }
 
+
+   
     const std::vector<Map::Interactable> &objects = currentMap.GetInteractableObjects();
     //TraceLog(LOG_INFO, "Number of objects: %d", objects.size());
     Rectangle playerInteractCollision = entityManager.GetPlayerInteractRec();
+    for(const Map::Interactable &object : objects){
+        if(object.name == "door" && !door.isUnlocked()){
+            if(CheckCollisionRecs(playerRec, object.rect)){
+                entityManager.UndoPlayerMovement();
+                entityManager.UpdatePlayerRects();
+                break;
+            }
+        }
+    }
+    
     
    //bool dialogOpen = false;
 
@@ -190,16 +217,27 @@ void Game::HandleCollisions()
             }
 
             if(IsKeyPressed(KEY_E) && coolDown <= 0.0f && object.name == "door"){
-                dialogOpen = true;
-                dialogText = "Door unlocked";
-                coolDown = 2.0f;
-                if(entityManager.GetPlayerKeyCount() <= 0){
+                if(GetDoorStatus()){
+                    // Door is unlocked, just show message
+                    dialogOpen = true;
+                    dialogText = "This door is unlocked.";
+                    coolDown = 2.0f;
+                }else if(entityManager.GetPlayerKeyCount() > 0){
+                    // Door is locked but player has keys - unlock it
+                    door.unlockDoor();
+                    door.setDoorSprite();
+                    entityManager.UseKey();
+                    dialogOpen = true;
+                    dialogText = "Door unlocked!";
+                    coolDown = 2.0f;
+                    TraceLog(LOG_INFO, "Door unlocked!");
+                }else{
+                    // Door is locked and player has no keys
                     dialogOpen = true;
                     dialogText = "This door is locked, maybe there is a key.";
                     coolDown = 2.0f;
                 }
-                //if door is locked
-                //change messagee
+                
             }
             
             

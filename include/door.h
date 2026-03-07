@@ -9,6 +9,7 @@ class Door{
         Texture2D doorLockedSprite;
         Texture2D doorUnlockedSprite;
         Texture2D doorSprite;
+        Vector2 position;
     public:
         Door();
         ~Door();
@@ -16,6 +17,7 @@ class Door{
         void setDoorSprite();
         bool isUnlocked();
         void unlockDoor();
+        void SetPosition(Vector2 pos);
 
 };
 
