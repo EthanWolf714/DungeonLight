@@ -4,20 +4,23 @@
 
 ## Description
 
-(Your Game Description)
+Explore a dark forgotten dungeon with untold storys and secrets. Move fast to make it through the darkness before your light gets snuffed out.
 
 ## Features
 
-- $(Game Feature 01)
-- $(Game Feature 02)
-- $(Game Feature 03)
+- $ Light shader around the player that fades over time 
+- $ Interactable object system 
+- $ Tile map loader using raytmx
+- $ Dialog text display for UI
 
 ## Controls
 
 Keyboard:   
-- $(Game Control 01)
-- $(Game Control 02)
-- $(Game Control 03)
+- $ UP (W)
+- $ DOWN (S)
+- $ RIGHT (D)
+- $ LEFT (A)
+- $ INTERACT (E)
 
 ## Screenshots
 
@@ -25,13 +28,18 @@ TODO: show your game to the world, animated GIFS reccomended
 
 ## Developers
 
-- (Developer01) - (Role/Tasks Developed)
-- (Developer02) - (Role/Tasks Developed)
-- (Developer03) - (Role/Tasks Developed)
+- Ethan Wolf - Programmer/ Developed all core systems for the game
+- Hannah Lambert - Artist and Narrative Designer/ edited premade assets and designed story elements
+
+## Credits
+
+- Map assets: DUMMEY DUNGEON by SortoDedd: $ https://sorto-dedd.itch.io/ 
+
+- Character:  1 Bit Asset Pack by vibrant gusano: $ https://vibrant-gusano.itch.io/
 
 ## Links
 - YouTube Gameplay: $(YouTube Link)
-- itch.io Release: $(Itch Game Page)
+- itch.io Release: $[(Itch Game Page)](https://foughtcloud13.itch.io/dungeon-light)
 - Steam Release: $(Steam Game Page)
 
 
