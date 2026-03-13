@@ -6,6 +6,12 @@
 #include <stddef.h> /* NULL */
 #include <stdlib.h> /* EXIT_FAILURE, EXIT_SUCCESS */
 
+// Define the 4 basic GameBoy green colors
+#define GB_GREEN01 (Color){155, 188, 15, 255}
+#define GB_GREEN02 (Color){110, 150, 27, 255}
+#define GB_GREEN03 (Color){48, 98, 48, 255}
+#define GB_GREEN04 (Color){15, 56, 15, 255}
+
 typedef enum GameScreen
 {
     LOGO = 0,
@@ -14,12 +20,23 @@ typedef enum GameScreen
     ENDING
 } GameScreen;
 
-
-
 static Sound fxLogo = {0};
 
-static int elementPositionY = -128;
+// Logo animation variables
+static int logoPositionX;
+static int logoPositionY;
 static int framesCounter = 0;
+static int lettersCount = 0;
+static int topSideRecWidth = 16;
+static int leftSideRecHeight = 16;
+static int bottomSideRecWidth = 16;
+static int rightSideRecHeight = 16;
+static int state = 0;
+static float alpha = 1.0f;
+
+static void LogoAnimationDraw(void);
+static void LogoAnimationUpdate(GameScreen& currentScreen);
+
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
@@ -30,13 +47,13 @@ int main()
     const int screenWidth = 800;
     const int screenHeight = 450;
 
-     TraceLog(LOG_INFO, "Logo texture loaded");
+    TraceLog(LOG_INFO, "Logo texture loaded");
     // const float panSpeed = 150.f; // pixels per second
 
     // audio loading
-     fxLogo = LoadSound("build/assets/audio/logo.wav");
+    fxLogo = LoadSound("build/assets/audio/logo.wav");
     // TraceLog(LOG_INFO, "Logo sound loaded");
-     InitAudioDevice();
+    InitAudioDevice();
     // TraceLog(LOG_INFO, "Audio device initialized");
     InitWindow(screenWidth, screenHeight, "Dungeon Light");
     TraceLog(LOG_INFO, "Window initialized");
@@ -49,6 +66,10 @@ int main()
     int currentFps = 60;
     SetTargetFPS(currentFps); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
+
+    // Logo screen variables
+    
+    //int elementPositionY = 0;
 
     TraceLog(LOG_INFO, "=== About to load map ===");
     if (!game.LoadMap("build/maps/test-map.tmx"))
@@ -67,16 +88,8 @@ int main()
         {
         case LOGO:
         {
-            framesCounter++;
-
-            elementPositionY++;
-            if (elementPositionY == (screenHeight / 2 - 64 - 1)) PlaySound(fxLogo);
-            if (elementPositionY > (screenHeight / 2 - 64)) elementPositionY = screenHeight / 2 - 64;
-            if (framesCounter > 300)
-            {
-                framesCounter = 0;
-                currentScreen = TITLE;
-            }
+            LogoAnimationUpdate(currentScreen);
+            
         }
         break;
         case TITLE:
@@ -124,9 +137,8 @@ int main()
         case LOGO:
         {
             // Draw LOGO screen
-            DrawRectangle(screenWidth/2 - 128, screenHeight/2 - 128, 256, 256, BLACK);
-            DrawRectangle(screenWidth/2 - 112, screenHeight/2 - 112, 224, 224, RAYWHITE);
-            DrawText("raylib", screenWidth/2 - 44, screenHeight/2 + 48, 50, BLACK);
+            ClearBackground(GB_GREEN01);
+            LogoAnimationDraw();
         }
         break;
         case TITLE:
@@ -172,11 +184,9 @@ int main()
         //----------------------------------------------------------------------------------
     }
 
-    
+    UnloadSound(fxLogo);
 
-     UnloadSound(fxLogo);
-
-     CloseAudioDevice();
+    CloseAudioDevice();
     // De-Initialization
     //--------------------------------------------------------------------------------------
     CloseWindow(); // Close window and OpenGL context
@@ -185,7 +195,93 @@ int main()
     return 0;
 }
 
+static void LogoAnimationUpdate(GameScreen& currentScreen)
+{
+    logoPositionX = GetScreenWidth() / 2 - 128;
+    logoPositionY = GetScreenHeight() / 2 - 128;
 
-void LogoAnimation(){
-    
+    if (state == 0) // State 0: Small box blinking
+    {
+        framesCounter++;
+
+        if (framesCounter == 120)
+        {
+            state = 1;
+            framesCounter = 0; // Reset counter... will be used later...
+        }
+    }
+    else if (state == 1) // State 1: Top and left bars growing
+    {
+        topSideRecWidth += 4;
+        leftSideRecHeight += 4;
+
+        if (topSideRecWidth == 256)
+            state = 2;
+    }
+    else if (state == 2) // State 2: Bottom and right bars growing
+    {
+        bottomSideRecWidth += 4;
+        rightSideRecHeight += 4;
+
+        if (bottomSideRecWidth == 256)
+            state = 3;
+    }
+    else if (state == 3) // State 3: Letters appearing (one by one)
+    {
+        framesCounter++;
+
+        if (framesCounter / 12) // Every 12 frames, one more letter!
+        {
+            lettersCount++;
+            framesCounter = 0;
+        }
+
+        if (lettersCount >= 10) // When all letters have appeared, just fade out everything
+        {
+            alpha -= 0.02f;
+
+            if (alpha <= 0.0f)
+            {
+                alpha = 0.0f;
+                state = 4;
+                currentScreen = TITLE;
+            }
+        }
+    }
+}
+
+
+static void LogoAnimationDraw(void)
+{
+
+    if (state == 0)
+    {
+        if ((framesCounter / 15) % 2)
+            DrawRectangle(logoPositionX, logoPositionY, 16, 16, GB_GREEN03);
+    }
+    else if (state == 1)
+    {
+        DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, GB_GREEN03);
+        DrawRectangle(logoPositionX, logoPositionY, 16, leftSideRecHeight, GB_GREEN03);
+    }
+    else if (state == 2)
+    {
+        DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, GB_GREEN03);
+        DrawRectangle(logoPositionX, logoPositionY, 16, leftSideRecHeight, GB_GREEN03);
+
+        DrawRectangle(logoPositionX + 240, logoPositionY, 16, rightSideRecHeight, GB_GREEN03);
+        DrawRectangle(logoPositionX, logoPositionY + 240, bottomSideRecWidth, 16, GB_GREEN03);
+    }
+    else if (state == 3)
+    {
+        DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, Fade(GB_GREEN03, alpha));
+        DrawRectangle(logoPositionX, logoPositionY + 16, 16, leftSideRecHeight - 32, Fade(GB_GREEN03, alpha));
+
+        DrawRectangle(logoPositionX + 240, logoPositionY + 16, 16, rightSideRecHeight - 32, Fade(GB_GREEN03, alpha));
+        DrawRectangle(logoPositionX, logoPositionY + 240, bottomSideRecWidth, 16, Fade(GB_GREEN03, alpha));
+
+        DrawRectangle(GetScreenWidth() / 2 - 112, GetScreenHeight() / 2 - 112, 224, 224, Fade(GB_GREEN01, alpha));
+
+        DrawText(TextSubtext("raylib", 0, lettersCount), GetScreenWidth() / 2 - 44, GetScreenHeight() / 2 + 48, 50, Fade(GB_GREEN03, alpha));
+    }
 }
