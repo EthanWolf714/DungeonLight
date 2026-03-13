@@ -29,7 +29,7 @@ public:
     std::vector<Vector2> GetKeyLocations();
     void HandleText();
     bool GetDoorStatus();
-    void LoadNextLevel();
+    void Reset();
 
     // void RenderLight(Light light);
 

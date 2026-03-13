@@ -33,6 +33,7 @@ public:
     void SpawnKey(Vector2 pos);
     std::vector<Key> GetKeys();
     void UseKey();
+    void CleanUpEnititys();
    
    
   

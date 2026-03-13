@@ -64,7 +64,11 @@ void EntityManager::UseKey()
     player.UseKey();
 }
 
-
+void EntityManager::CleanUpEnititys() 
+{
+   torches.clear();
+   keys.clear();
+}
 Vector2 EntityManager::GetPlayerPos()
 {
     return player.GetPosition();

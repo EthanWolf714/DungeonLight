@@ -105,10 +105,12 @@ bool Game::GetDoorStatus()
     return door.isUnlocked();
 }
 
-void Game::LoadNextLevel()
+void Game::Reset()
 {
-    
+    entityManager.CleanUpEnititys();
 }
+
+
 
 bool Game::IsGameOver()
 {

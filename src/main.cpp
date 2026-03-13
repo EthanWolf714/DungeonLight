@@ -102,6 +102,7 @@ int main()
             // Load level if not loaded
             if (!levelLoaded)
             {
+                //constructs a string based on level number
                 std::string mapPath = "build/maps/level_" + std::to_string(currentLevel) + ".tmx";
                 TraceLog(LOG_INFO, "=== About to load map: %s ===", mapPath.c_str());
                 if (!game.LoadMap(mapPath.c_str()))
@@ -132,6 +133,7 @@ int main()
                 }
                 else
                 {
+                    game.Reset();
                     levelLoaded = false;
                 }
             }
@@ -218,6 +220,7 @@ int main()
 
 static void LogoAnimationUpdate(GameScreen& currentScreen)
 {
+    //animation from raylib examples
     logoPositionX = GetScreenWidth() / 2 - 128;
     logoPositionY = GetScreenHeight() / 2 - 128;
 
