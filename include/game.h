@@ -29,6 +29,7 @@ public:
     std::vector<Vector2> GetKeyLocations();
     void HandleText();
     bool GetDoorStatus();
+    void LoadNextLevel();
 
     // void RenderLight(Light light);
 
@@ -44,6 +45,7 @@ private:
     std::string dialogText;
     float coolDown;
     bool isGameOver;
+    int level;
 };
 
 #endif

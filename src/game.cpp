@@ -105,6 +105,11 @@ bool Game::GetDoorStatus()
     return door.isUnlocked();
 }
 
+void Game::LoadNextLevel()
+{
+    
+}
+
 bool Game::IsGameOver()
 {
     if(!entityManager.GetPlayerActivity()){

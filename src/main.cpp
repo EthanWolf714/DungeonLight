@@ -5,6 +5,7 @@
 #include "light.h"
 #include <stddef.h> /* NULL */
 #include <stdlib.h> /* EXIT_FAILURE, EXIT_SUCCESS */
+#include <string>
 
 // Define the 4 basic GameBoy green colors
 #define GB_GREEN01 (Color){155, 188, 15, 255}
@@ -23,6 +24,7 @@ typedef enum GameScreen
 static Sound fxLogo = {0};
 
 // Logo animation variables
+
 static int logoPositionX;
 static int logoPositionY;
 static int framesCounter = 0;
@@ -67,18 +69,13 @@ int main()
     SetTargetFPS(currentFps); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
+    // Level management
+    int currentLevel = 1;
+    bool levelLoaded = false;
+
     // Logo screen variables
     
     //int elementPositionY = 0;
-
-    TraceLog(LOG_INFO, "=== About to load map ===");
-    if (!game.LoadMap("build/maps/test-map.tmx"))
-    {
-        TraceLog(LOG_ERROR, "MAP LOAD FAILED!");
-        CloseWindow();
-        return EXIT_FAILURE;
-    }
-    TraceLog(LOG_INFO, "=== Map loaded successfully ===");
 
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
@@ -102,6 +99,21 @@ int main()
         break;
         case GAMEPLAY:
         {
+            // Load level if not loaded
+            if (!levelLoaded)
+            {
+                std::string mapPath = "build/maps/level_" + std::to_string(currentLevel) + ".tmx";
+                TraceLog(LOG_INFO, "=== About to load map: %s ===", mapPath.c_str());
+                if (!game.LoadMap(mapPath.c_str()))
+                {
+                    TraceLog(LOG_ERROR, "MAP LOAD FAILED!");
+                    CloseWindow();
+                    return EXIT_FAILURE;
+                }
+                TraceLog(LOG_INFO, "=== Map loaded successfully ===");
+                levelLoaded = true;
+            }
+
             // Update
             //----------------------------------------------------------------------------------
             // TODO: Update your variables here
@@ -112,7 +124,16 @@ int main()
             }
             else
             {
-                currentScreen = ENDING;
+                // Level completed, load next level
+                currentLevel++;
+                if (currentLevel > 3) // Assuming 2 levels
+                {
+                    currentScreen = ENDING;
+                }
+                else
+                {
+                    levelLoaded = false;
+                }
             }
         }
         break;
